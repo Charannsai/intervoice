@@ -32,8 +32,18 @@ function InterviewSetup() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ role, experienceLevel: level })
       });
+
+      if (!response.ok) {
+        throw new Error('Failed to generate rounds');
+      }
+
       const data = await response.json();
-      setRounds(data.rounds);
+
+      if (data.rounds && Array.isArray(data.rounds)) {
+        setRounds(data.rounds);
+      } else {
+        throw new Error('Invalid response format');
+      }
     } catch (err) {
       setError('Failed to generate interview structure. Please try again.');
       console.error(err);
