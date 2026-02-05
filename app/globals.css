@@ -2,59 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  :root {
-    --background: 2, 6, 23; 
-    --foreground: 248, 250, 252;
-  }
+:root {
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 10, 10, 10;
+  --background-end-rgb: 0, 0, 0;
 }
 
+body {
+  color: rgb(var(--foreground-rgb));
+  background: black;
+}
+
+/* Professional Utilities */
 @layer utilities {
   .glass-panel {
-    @apply bg-glass backdrop-blur-md border border-glass-border;
+    @apply bg-zinc-900/50 backdrop-blur-sm border border-zinc-800;
   }
   
   .glass-card {
-    @apply bg-slate-900/50 backdrop-blur-xl border border-slate-800/50 transition-all duration-300;
+    @apply bg-zinc-950 border border-zinc-800 hover:border-zinc-700 transition-colors duration-200;
   }
 
   .glass-button {
-    @apply relative overflow-hidden bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 hover:border-slate-600 transition-all text-white backdrop-blur-sm shadow-lg hover:shadow-primary/20;
+    @apply bg-white text-black hover:bg-zinc-200 transition-colors font-medium border border-transparent;
   }
-
+  
   .text-glow {
-    text-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+    /* Minimal or no glow for professional look */
+    @apply text-white; 
   }
 
   .bg-grid-white {
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='rgb(255 255 255 / 0.05)'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");
+    background-size: 40px 40px;
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
   }
-
-  .animate-blob {
-    animation: blob 7s infinite;
-  }
-}
-
-@keyframes blob {
-  0% { transform: translate(0px, 0px) scale(1); }
-  33% { transform: translate(30px, -50px) scale(1.1); }
-  66% { transform: translate(-20px, 20px) scale(0.9); }
-  100% { transform: translate(0px, 0px) scale(1); }
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
 }
-
 ::-webkit-scrollbar-track {
-  @apply bg-slate-950;
+  background: #000;
 }
-
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-800 rounded-full border-2 border-slate-950;
+  background: #333;
+  border-radius: 4px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-slate-700;
+  background: #555;
 }

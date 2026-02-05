@@ -2,8 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Question, MCQResponse } from '@/types';
-
-import { Clock, CheckCircle } from 'lucide-react';
+import { Clock, CheckCircle2, Circle } from 'lucide-react';
 
 interface MCQRoundProps {
   roundName: string;
@@ -59,7 +58,7 @@ export default function MCQRound({ roundName, focus, questionCount, onComplete }
     if (selectedAnswer) {
       const timeSpent = Date.now() - startTime;
       const isCorrect = selectedAnswer === questions[currentQuestion].correctAnswer;
-      
+
       const response: MCQResponse = {
         questionId: questions[currentQuestion].id,
         selectedAnswer,
@@ -96,8 +95,8 @@ export default function MCQRound({ roundName, focus, questionCount, onComplete }
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading questions...</p>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white mx-auto mb-4"></div>
+          <p className="text-zinc-500 text-sm font-mono">Loading module...</p>
         </div>
       </div>
     );
@@ -106,7 +105,7 @@ export default function MCQRound({ roundName, focus, questionCount, onComplete }
   if (!questions || questions.length === 0) {
     return (
       <div className="text-center py-8">
-        <p className="text-red-600">Failed to load questions. Please try again.</p>
+        <p className="text-red-400 text-sm">Error initializing module. Please retry.</p>
       </div>
     );
   }
@@ -114,39 +113,34 @@ export default function MCQRound({ roundName, focus, questionCount, onComplete }
   const currentQ = questions[currentQuestion];
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-3xl mx-auto">
       {/* Header */}
-      <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold text-gray-900">{roundName}</h2>
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center text-gray-600">
-              <Clock className="h-4 w-4 mr-1" />
-              <span className={timeLeft < 60 ? 'text-red-600 font-medium' : ''}>
-                {formatTime(timeLeft)}
-              </span>
-            </div>
-            <div className="text-sm text-gray-500">
-              {currentQuestion + 1} of {questions.length}
-            </div>
-          </div>
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <div className="text-xs text-zinc-500 uppercase tracking-wider mb-1">Module Processing</div>
+          <h2 className="text-xl font-bold text-white">{roundName}</h2>
         </div>
-        
-        <div className="w-full bg-gray-200 rounded-full h-2">
-          <div 
-            className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-            style={{ width: `${((currentQuestion + 1) / questions.length) * 100}%` }}
-          ></div>
+        <div className="flex flex-col items-end">
+          <div className="flex items-center gap-2 text-zinc-400 font-mono text-sm mb-1">
+            <Clock className="h-4 w-4" />
+            <span className={timeLeft < 60 ? 'text-red-500' : ''}>{formatTime(timeLeft)}</span>
+          </div>
+          <div className="text-xs text-zinc-600">Question {currentQuestion + 1} / {questions.length}</div>
         </div>
       </div>
 
-      {/* Question */}
-      <div className="bg-white rounded-lg shadow-sm p-6">
-        <div className="mb-6">
-          <h3 className="text-lg font-medium text-gray-900 mb-4">
-            Question {currentQuestion + 1}
-          </h3>
-          <p className="text-gray-700 leading-relaxed">{currentQ.question}</p>
+      {/* Progress */}
+      <div className="w-full bg-zinc-900 rounded-full h-1 mb-8">
+        <div
+          className="bg-white h-1 rounded-full transition-all duration-300"
+          style={{ width: `${((currentQuestion + 1) / questions.length) * 100}%` }}
+        />
+      </div>
+
+      {/* Question Card */}
+      <div className="bg-zinc-900/30 border border-zinc-800 rounded-lg p-8">
+        <div className="mb-8">
+          <p className="text-zinc-300 text-lg leading-relaxed">{currentQ.question}</p>
         </div>
 
         {/* Options */}
@@ -155,37 +149,34 @@ export default function MCQRound({ roundName, focus, questionCount, onComplete }
             <button
               key={index}
               onClick={() => handleAnswerSelect(option)}
-              className={`w-full text-left p-4 border-2 rounded-lg transition-all ${
-                selectedAnswer === option
-                  ? 'border-blue-500 bg-blue-50'
-                  : 'border-gray-200 hover:border-gray-300'
-              }`}
+              className={`w-full text-left p-4 border rounded-lg transition-all flex items-center gap-4 group ${selectedAnswer === option
+                  ? 'border-white bg-white/5 text-white'
+                  : 'border-zinc-800 text-zinc-400 hover:border-zinc-700 hover:bg-zinc-900/50'
+                }`}
             >
-              <div className="flex items-center">
-                <span className="flex-shrink-0 w-6 h-6 border-2 rounded-full mr-3 flex items-center justify-center text-sm font-medium">
-                  {String.fromCharCode(65 + index)}
-                </span>
-                <span className="text-gray-900">{option}</span>
-              </div>
+              <span className={`flex-shrink-0 w-6 h-6 rounded-full border flex items-center justify-center text-xs font-mono transition-colors ${selectedAnswer === option ? 'border-emerald-500 text-emerald-500' : 'border-zinc-700 text-zinc-600 group-hover:border-zinc-500'
+                }`}>
+                {String.fromCharCode(65 + index)}
+              </span>
+              <span className="text-sm">{option}</span>
             </button>
           ))}
         </div>
 
         {/* Navigation */}
-        <div className="flex justify-between items-center">
-          <div className="text-sm text-gray-500">
-            Select an answer to continue
-          </div>
+        <div className="flex justify-between items-center pt-6 border-t border-zinc-800/50">
+          <span className="text-xs text-zinc-600">
+            Selection required to proceed
+          </span>
           <button
             onClick={handleNext}
             disabled={!selectedAnswer}
-            className={`px-6 py-2 rounded-lg font-medium transition-all ${
-              selectedAnswer
-                ? 'bg-blue-600 text-white hover:bg-blue-700'
-                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-            }`}
+            className={`px-6 py-2 rounded-md font-medium text-sm transition-all ${selectedAnswer
+                ? 'bg-white text-black hover:bg-zinc-200'
+                : 'bg-zinc-800 text-zinc-500 cursor-not-allowed'
+              }`}
           >
-            {currentQuestion === questions.length - 1 ? 'Submit' : 'Next'}
+            {currentQuestion === questions.length - 1 ? 'Complete Module' : 'Next Question'}
           </button>
         </div>
       </div>

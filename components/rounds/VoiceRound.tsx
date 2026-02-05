@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Mic, MicOff, Volume2, VolumeX } from 'lucide-react';
+import { Mic, MicOff, Volume2, VolumeX, Activity } from 'lucide-react';
 import { geminiService } from '@/lib/gemini';
+import { motion } from 'framer-motion';
 
 interface VoiceRoundProps {
   roundName: string;
@@ -37,7 +38,7 @@ export default function VoiceRound({ roundName, focus, onComplete }: VoiceRoundP
         recognitionRef.current.onresult = (event: any) => {
           let interimTranscript = '';
           let finalTranscript = '';
-          
+
           for (let i = event.resultIndex; i < event.results.length; i++) {
             const transcript = event.results[i][0].transcript;
             if (event.results[i].isFinal) {
@@ -46,7 +47,7 @@ export default function VoiceRound({ roundName, focus, onComplete }: VoiceRoundP
               interimTranscript += transcript;
             }
           }
-          
+
           setTranscript(prev => {
             const existingFinal = prev.split('|INTERIM|')[0] || '';
             return existingFinal + finalTranscript + (interimTranscript ? '|INTERIM|' + interimTranscript : '');
@@ -118,10 +119,10 @@ export default function VoiceRound({ roundName, focus, onComplete }: VoiceRoundP
           setTranscript('');
         } else {
           // Calculate final score
-          const avgScore = newResponses.reduce((sum, r) => 
+          const avgScore = newResponses.reduce((sum, r) =>
             sum + (r.evaluation.technical + r.evaluation.communication + r.evaluation.confidence) / 3, 0
           ) / newResponses.length;
-          
+
           onComplete(Math.round(avgScore * 10), { responses: newResponses, avgScore });
         }
       } catch (error) {
@@ -138,114 +139,113 @@ export default function VoiceRound({ roundName, focus, onComplete }: VoiceRoundP
   };
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-3xl mx-auto">
       {/* Header */}
-      <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-        <div className="flex justify-between items-center">
-          <h2 className="text-xl font-semibold text-gray-900">{roundName}</h2>
-          <div className="text-sm text-gray-500">
-            Question {questionCount + 1} of 5
-          </div>
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <div className="text-xs text-zinc-500 uppercase tracking-wider mb-1">Live Session</div>
+          <h2 className="text-xl font-bold text-white">{roundName}</h2>
         </div>
-        <p className="text-gray-600 mt-2">Focus: {focus}</p>
+        <div className="text-xs font-mono text-zinc-500 bg-zinc-900 border border-zinc-800 px-3 py-1 rounded">
+          Q{questionCount + 1}/5
+        </div>
       </div>
 
-      {/* Interview Interface */}
-      <div className="bg-white rounded-lg shadow-sm p-8">
-        {/* AI Avatar */}
-        <div className="text-center mb-8">
-          <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full mx-auto mb-4 flex items-center justify-center">
-            <span className="text-3xl text-white">🤖</span>
-          </div>
-          <h3 className="text-lg font-medium text-gray-900">AI Interviewer</h3>
-        </div>
-
-        {/* Current Question */}
-        <div className="bg-gray-50 rounded-lg p-6 mb-6">
-          <div className="flex items-start justify-between mb-4">
-            <h4 className="font-medium text-gray-900">Current Question:</h4>
-            <button
-              onClick={toggleMute}
-              className="text-gray-500 hover:text-gray-700"
-            >
-              {isSpeaking ? <Volume2 className="h-5 w-5" /> : <VolumeX className="h-5 w-5" />}
-            </button>
-          </div>
-          <p className="text-gray-700 leading-relaxed">{currentQuestion}</p>
-          {isSpeaking && (
-            <div className="mt-4 flex items-center text-blue-600">
-              <div className="animate-pulse w-2 h-2 bg-blue-600 rounded-full mr-2"></div>
-              <span className="text-sm">AI is speaking...</span>
+      {/* Main Interface */}
+      <div className="bg-zinc-900/30 border border-zinc-800 rounded-lg p-8 relative overflow-hidden">
+        {/* Active Speaker Visualizer */}
+        <div className="flex justify-center mb-12 relative h-32 items-center">
+          {isSpeaking ? (
+            <div className="flex gap-1 items-center justify-center h-full">
+              {[...Array(5)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  animate={{ height: [20, 60, 20] }}
+                  transition={{ repeat: Infinity, duration: 1, delay: i * 0.1 }}
+                  className="w-2 bg-white rounded-full"
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="w-24 h-24 rounded-full border border-zinc-700 flex items-center justify-center bg-zinc-800/50">
+              <Activity className="h-8 w-8 text-zinc-500" />
             </div>
           )}
         </div>
 
-        {/* Voice Controls */}
-        <div className="text-center mb-6">
+        {/* Question Area */}
+        <div className="mb-8 text-center max-w-xl mx-auto">
+          <h3 className="text-zinc-500 text-xs uppercase tracking-widest mb-4">Interviewer</h3>
+          <p className="text-xl text-white font-medium leading-relaxed">"{currentQuestion}"</p>
+        </div>
+
+        {/* Controls */}
+        <div className="flex justify-center mb-8">
           <button
             onClick={isListening ? stopListening : startListening}
             disabled={isSpeaking}
-            className={`w-20 h-20 rounded-full flex items-center justify-center transition-all ${
-              isListening
-                ? 'bg-red-500 hover:bg-red-600 animate-pulse'
-                : 'bg-blue-500 hover:bg-blue-600'
-            } ${isSpeaking ? 'opacity-50 cursor-not-allowed' : ''}`}
+            className={`w-16 h-16 rounded-full flex items-center justify-center transition-all ${isListening
+                ? 'bg-red-500/20 border border-red-500 text-red-500'
+                : 'bg-white text-black hover:scale-105'
+              } ${isSpeaking ? 'opacity-20 cursor-not-allowed' : ''}`}
           >
-            {isListening ? (
-              <MicOff className="h-8 w-8 text-white" />
-            ) : (
-              <Mic className="h-8 w-8 text-white" />
-            )}
+            {isListening ? <MicOff className="h-6 w-6" /> : <Mic className="h-6 w-6" />}
           </button>
-          <p className="text-sm text-gray-600 mt-2">
-            {isListening ? 'Click to stop recording' : 'Click to start recording'}
+        </div>
+
+        {/* Status Text */}
+        <p className="text-center text-xs text-zinc-500 mb-8 font-mono">
+          {isListening ? 'LISTENING...' : isSpeaking ? 'SPEAKING...' : 'READY TO RECORD'}
+        </p>
+
+        {/* Transcript */}
+        <div className="bg-black/50 border border-zinc-800 rounded-lg p-4 min-h-[100px] mb-8">
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-xs text-zinc-500 uppercase">Transcript</span>
+            {transcript && <span className="text-xs text-emerald-500">Live</span>}
+          </div>
+          <p className="text-zinc-300 text-sm leading-relaxed">
+            {transcript ? (
+              <>
+                <span className="text-white">{transcript.split('|INTERIM|')[0]}</span>
+                <span className="text-zinc-600 ml-1">{transcript.split('|INTERIM|')[1]}</span>
+              </>
+            ) : (
+              <span className="text-zinc-700 italic">Waiting for input...</span>
+            )}
           </p>
         </div>
 
-        {/* Live Transcript */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 min-h-[100px]">
-          <h4 className="font-medium text-blue-900 mb-2">Live Transcript:</h4>
-          {transcript ? (
-            <div className="text-blue-800">
-              <span>{transcript.split('|INTERIM|')[0]}</span>
-              {transcript.includes('|INTERIM|') && (
-                <span className="text-blue-600 opacity-70 italic">
-                  {transcript.split('|INTERIM|')[1]}
-                </span>
-              )}
-            </div>
-          ) : (
-            <p className="text-blue-600 opacity-50 italic">
-              {isListening ? 'Listening... Start speaking' : 'Click the microphone to start recording'}
-            </p>
-          )}
-        </div>
-
-        {/* Submit Button */}
-        <div className="text-center">
+        {/* Action Bar */}
+        <div className="flex justify-end pt-6 border-t border-zinc-800">
           <button
             onClick={submitResponse}
             disabled={!transcript.trim() || isSpeaking}
-            className={`px-8 py-3 rounded-lg font-medium transition-all ${
-              transcript.trim() && !isSpeaking
-                ? 'bg-green-600 text-white hover:bg-green-700'
-                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-            }`}
+            className={`px-6 py-2 rounded-md font-medium text-sm transition-all ${transcript.trim() && !isSpeaking
+                ? 'bg-white text-black hover:bg-zinc-200'
+                : 'bg-zinc-800 text-zinc-500 cursor-not-allowed'
+              }`}
           >
-            Submit Response
+            Submit Answer
           </button>
         </div>
+      </div>
 
-        {/* Instructions */}
-        <div className="mt-8 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-          <h4 className="font-medium text-yellow-900 mb-2">Instructions:</h4>
-          <ul className="text-sm text-yellow-800 space-y-1">
-            <li>• Listen to the question carefully</li>
-            <li>• Click the microphone to start recording your answer</li>
-            <li>• Speak clearly and at a normal pace</li>
-            <li>• Click again to stop recording</li>
-            <li>• Review your transcript and submit</li>
+      {/* Instructions */}
+      <div className="mt-8 grid grid-cols-2 gap-4">
+        <div className="bg-zinc-900/50 border border-zinc-800 p-4 rounded-lg">
+          <h4 className="text-xs font-semibold text-white mb-2">Instructions</h4>
+          <ul className="text-xs text-zinc-500 space-y-1">
+            <li>• Speak clearly into your microphone</li>
+            <li>• Keep answers concise (1-2 mins)</li>
+            <li>• Wait for the AI to finish speaking</li>
           </ul>
+        </div>
+        <div className="bg-zinc-900/50 border border-zinc-800 p-4 rounded-lg">
+          <h4 className="text-xs font-semibold text-white mb-2">Tips</h4>
+          <p className="text-xs text-zinc-500 leading-relaxed">
+            Structure your response using the STAR method if applicable: Situation, Task, Action, Result.
+          </p>
         </div>
       </div>
     </div>

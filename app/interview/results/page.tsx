@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { supabase } from '@/lib/supabase';
 import AuthGuard from '@/components/ui/AuthGuard';
-import { Award, TrendingUp, Clock, CheckCircle, Download, Home, RotateCcw } from 'lucide-react';
+import { Award, TrendingUp, Clock, CheckCircle2, Download, Home, RotateCcw, AlertCircle } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 function InterviewResults() {
   const [sessionData, setSessionData] = useState<any>(null);
@@ -40,9 +40,9 @@ function InterviewResults() {
   };
 
   const getScoreColor = (score: number) => {
-    if (score >= 80) return 'text-green-600';
-    if (score >= 60) return 'text-yellow-600';
-    return 'text-red-600';
+    if (score >= 80) return 'text-emerald-500';
+    if (score >= 60) return 'text-yellow-500';
+    return 'text-red-500';
   };
 
   const getScoreLabel = (score: number) => {
@@ -53,23 +53,26 @@ function InterviewResults() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      <div className="min-h-screen flex items-center justify-center bg-black text-white">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white mx-auto mb-4"></div>
+          <p className="text-zinc-500 text-sm font-mono">Generating Report...</p>
+        </div>
       </div>
     );
   }
 
   if (!sessionData) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">No Results Found</h2>
-          <p className="text-gray-600 mb-6">Complete an interview to see your results here.</p>
+      <div className="min-h-screen flex items-center justify-center bg-black text-white">
+        <div className="text-center max-w-md">
+          <h2 className="text-xl font-bold text-white mb-2">No Results Found</h2>
+          <p className="text-zinc-500 text-sm mb-6">Complete an interview session to generate a report.</p>
           <button
             onClick={() => router.push('/start-interview')}
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
+            className="bg-white text-black px-6 py-2 rounded-md font-medium text-sm hover:bg-zinc-200 transition-colors"
           >
-            Start New Interview
+            Start New Session
           </button>
         </div>
       </div>
@@ -77,65 +80,64 @@ function InterviewResults() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-8">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-black text-white py-12 px-4">
+      <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full mb-6">
-            <Award className="h-10 w-10 text-white" />
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center justify-center w-12 h-12 bg-white rounded-full mb-6">
+            <Award className="h-6 w-6 text-black" />
           </div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Interview Complete!</h1>
-          <p className="text-xl text-gray-600">Here's how you performed</p>
+          <h1 className="text-2xl font-bold text-white mb-2 tracking-tight">Performace Report</h1>
+          <p className="text-zinc-400 text-sm">Detailed analysis of your interview session</p>
         </div>
 
         {/* Overall Score */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 mb-8 text-center">
-          <div className="mb-6">
-            <div className={`text-6xl font-bold mb-2 ${getScoreColor(sessionData.overallScore)}`}>
-              {sessionData.overallScore}%
+        <div className="bg-zinc-900/30 border border-zinc-800 rounded-lg p-8 mb-8">
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            <div className="text-center md:text-left">
+              <div className="text-sm font-medium text-zinc-500 uppercase tracking-widest mb-1">Overall Score</div>
+              <div className={`text-5xl font-bold mb-2 ${getScoreColor(sessionData.overallScore)}`}>
+                {sessionData.overallScore}%
+              </div>
+              <div className="text-lg font-medium text-white">
+                {getScoreLabel(sessionData.overallScore)}
+              </div>
             </div>
-            <div className={`text-2xl font-semibold ${getScoreColor(sessionData.overallScore)}`}>
-              {getScoreLabel(sessionData.overallScore)}
-            </div>
-          </div>
-          
-          <div className="grid md:grid-cols-3 gap-6 mt-8">
-            <div className="text-center">
-              <div className="text-2xl font-bold text-gray-900">{sessionData.role}</div>
-              <div className="text-gray-600">Position</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-gray-900">{sessionData.level}</div>
-              <div className="text-gray-600">Experience Level</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-gray-900">{sessionData.rounds?.length || 0}</div>
-              <div className="text-gray-600">Rounds Completed</div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-black/50 p-4 rounded border border-zinc-800">
+                <div className="text-xs text-zinc-500 mb-1">Role</div>
+                <div className="font-medium text-white">{sessionData.role || 'N/A'}</div>
+              </div>
+              <div className="bg-black/50 p-4 rounded border border-zinc-800">
+                <div className="text-xs text-zinc-500 mb-1">Level</div>
+                <div className="font-medium text-white">{sessionData.level || 'N/A'}</div>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Round Breakdown */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Round-wise Performance</h2>
-          <div className="space-y-4">
+        <div className="mb-8">
+          <h2 className="text-sm font-semibold text-zinc-500 uppercase tracking-widest mb-4">Module Breakdown</h2>
+          <div className="bg-zinc-900/30 border border-zinc-800 rounded-lg overflow-hidden">
             {sessionData.roundResults?.map((round: any, index: number) => (
-              <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                <div className="flex items-center">
-                  <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-4">
-                    <span className="font-semibold text-blue-600">{index + 1}</span>
+              <div key={index} className="flex items-center justify-between p-4 border-b border-zinc-800 last:border-0 hover:bg-zinc-900/50 transition-colors">
+                <div className="flex items-center gap-4">
+                  <div className="w-8 h-8 bg-zinc-900 border border-zinc-800 rounded flex items-center justify-center text-xs font-mono text-zinc-400">
+                    {index + 1}
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900">{round.name}</h3>
-                    <p className="text-sm text-gray-600">{round.type}</p>
+                    <h3 className="font-medium text-white text-sm">{round.name}</h3>
+                    <p className="text-xs text-zinc-500">{round.type}</p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className={`text-2xl font-bold ${getScoreColor(round.score)}`}>
+                  <div className={`text-lg font-bold ${getScoreColor(round.score)}`}>
                     {round.score}%
                   </div>
-                  <div className="text-sm text-gray-500">
-                    {round.passed ? 'Passed' : 'Failed'}
+                  <div className={`text-xs ${round.passed ? 'text-emerald-500' : 'text-red-500'}`}>
+                    {round.passed ? 'Pass' : 'Fail'}
                   </div>
                 </div>
               </div>
@@ -143,34 +145,32 @@ function InterviewResults() {
           </div>
         </div>
 
-        {/* Feedback */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Performance Insights</h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            <div>
-              <h3 className="text-lg font-semibold text-green-600 mb-4 flex items-center">
-                <CheckCircle className="h-5 w-5 mr-2" />
-                Strengths
-              </h3>
-              <ul className="space-y-2 text-gray-700">
-                {sessionData.overallScore >= 80 && <li>• Excellent technical knowledge</li>}
-                {sessionData.overallScore >= 60 && <li>• Good problem-solving approach</li>}
-                <li>• Completed all interview rounds</li>
-                <li>• Demonstrated relevant experience</li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-orange-600 mb-4 flex items-center">
-                <TrendingUp className="h-5 w-5 mr-2" />
-                Areas for Improvement
-              </h3>
-              <ul className="space-y-2 text-gray-700">
-                {sessionData.overallScore < 80 && <li>• Focus on technical fundamentals</li>}
-                {sessionData.overallScore < 60 && <li>• Practice more coding problems</li>}
-                <li>• Improve communication clarity</li>
-                <li>• Practice behavioral questions</li>
-              </ul>
-            </div>
+        {/* Insights */}
+        <div className="grid md:grid-cols-2 gap-8 mb-12">
+          <div className="bg-zinc-900/30 border border-zinc-800 rounded-lg p-6">
+            <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+              <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+              Key Strengths
+            </h3>
+            <ul className="space-y-3 text-sm text-zinc-400">
+              {sessionData.overallScore >= 80 && <li className="flex gap-2"><span>•</span> Excellent technical depth</li>}
+              {sessionData.overallScore >= 60 && <li className="flex gap-2"><span>•</span> Solid problem-solving foundations</li>}
+              <li className="flex gap-2"><span>•</span> Completed full pipeline</li>
+              <li className="flex gap-2"><span>•</span> Clear communication style</li>
+            </ul>
+          </div>
+
+          <div className="bg-zinc-900/30 border border-zinc-800 rounded-lg p-6">
+            <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+              <TrendingUp className="h-4 w-4 text-yellow-500" />
+              Focus Areas
+            </h3>
+            <ul className="space-y-3 text-sm text-zinc-400">
+              {sessionData.overallScore < 80 && <li className="flex gap-2"><span>•</span> Review core algorithm complexities</li>}
+              {sessionData.overallScore < 60 && <li className="flex gap-2"><span>•</span> Practice system design patterns</li>}
+              <li className="flex gap-2"><span>•</span> Refine edge-case handling</li>
+              <li className="flex gap-2"><span>•</span> Structure answers with STAR method</li>
+            </ul>
           </div>
         </div>
 
@@ -178,17 +178,17 @@ function InterviewResults() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <button
             onClick={() => router.push('/dashboard')}
-            className="flex items-center justify-center px-8 py-4 bg-gray-600 text-white rounded-xl hover:bg-gray-700 transition-all"
+            className="flex items-center justify-center px-6 py-3 border border-zinc-700 text-white rounded-md hover:bg-zinc-900 transition-colors text-sm font-medium"
           >
-            <Home className="h-5 w-5 mr-2" />
+            <Home className="h-4 w-4 mr-2" />
             Back to Dashboard
           </button>
           <button
             onClick={() => router.push('/start-interview')}
-            className="flex items-center justify-center px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all"
+            className="flex items-center justify-center px-6 py-3 bg-white text-black rounded-md hover:bg-zinc-200 transition-colors text-sm font-medium"
           >
-            <RotateCcw className="h-5 w-5 mr-2" />
-            Take Another Interview
+            <RotateCcw className="h-4 w-4 mr-2" />
+            New Session
           </button>
         </div>
       </div>
