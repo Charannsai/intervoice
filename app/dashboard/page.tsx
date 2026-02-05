@@ -5,11 +5,12 @@ import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import AuthGuard from '@/components/ui/AuthGuard';
 import { User } from '@supabase/supabase-js';
-import { 
-  Plus, Calendar, TrendingUp, Award, Clock, CheckCircle, 
-  Brain, Target, BookOpen, Zap, Star, Trophy, 
+import { motion } from 'framer-motion';
+import {
+  Plus, Calendar, TrendingUp, Award, Clock, CheckCircle,
+  Brain, Target, BookOpen, Zap, Star, Trophy,
   BarChart3, Users, MessageCircle, Download,
-  Play, ArrowRight, ChevronRight, Sparkles
+  Play, ArrowRight, ChevronRight, Sparkles, User as UserIcon
 } from 'lucide-react';
 
 function Dashboard() {
@@ -38,6 +39,9 @@ function Dashboard() {
       return;
     }
     setUser(user);
+    if (user.email) {
+      setUserProfile(prev => ({ ...prev, name: user.email!.split('@')[0] }));
+    }
   };
 
   const loadSessions = async () => {
@@ -51,7 +55,7 @@ function Dashboard() {
       .order('created_at', { ascending: false });
 
     setSessions(data || []);
-    
+
     if (data && data.length > 0) {
       const avgScore = Math.round(data.reduce((acc, s) => acc + s.overall_score, 0) / data.length);
       const completedCount = data.filter(s => s.status === 'completed').length;
@@ -61,7 +65,7 @@ function Dashboard() {
         completedRounds: completedCount
       }));
     }
-    
+
     setLoading(false);
   };
 
@@ -71,258 +75,218 @@ function Dashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      <div className="min-h-screen flex items-center justify-center bg-slate-950">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-500"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen bg-slate-950 pt-24 px-4 pb-12">
+      <div className="max-w-7xl mx-auto">
+
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-2xl font-medium text-gray-900 mb-1">Dashboard</h1>
-          <p className="text-gray-600">Welcome back, {userProfile.name}</p>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4"
+        >
+          <div>
+            <h1 className="text-3xl font-bold text-white mb-2 tracking-tight">Dashboard Overview</h1>
+            <p className="text-slate-400">Welcome back, <span className="text-indigo-400 font-medium capitalize">{userProfile.name}</span></p>
+          </div>
+          <button
+            onClick={startNewInterview}
+            className="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-xl hover:shadow-lg hover:shadow-indigo-500/20 transition-all flex items-center gap-2 font-medium active:scale-95"
+          >
+            <Plus className="h-5 w-5" />
+            New Simulation
+          </button>
+        </motion.div>
 
         {/* Stats Overview */}
-        <div className="grid grid-cols-4 gap-6 mb-8">
-          <div className="bg-white border border-gray-200 rounded-lg p-6">
-            <div className="text-2xl font-medium text-gray-900">{sessions.length}</div>
-            <div className="text-sm text-gray-500">Total Interviews</div>
-          </div>
-          <div className="bg-white border border-gray-200 rounded-lg p-6">
-            <div className="text-2xl font-medium text-gray-900">
-              {sessions.length > 0 ? Math.round(sessions.reduce((acc, s) => acc + s.overall_score, 0) / sessions.length) : 0}%
-            </div>
-            <div className="text-sm text-gray-500">Average Score</div>
-          </div>
-          <div className="bg-white border border-gray-200 rounded-lg p-6">
-            <div className="text-2xl font-medium text-gray-900">
-              {sessions.filter(s => s.status === 'completed').length}
-            </div>
-            <div className="text-sm text-gray-500">Completed</div>
-          </div>
-          <div className="bg-white border border-gray-200 rounded-lg p-6">
-            <div className="text-2xl font-medium text-gray-900">
-              {sessions.length > 0 ? Math.round((sessions.filter(s => s.overall_score >= 70).length / sessions.length) * 100) : 0}%
-            </div>
-            <div className="text-sm text-gray-500">Success Rate</div>
-          </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+          {[
+            { label: 'Total Interviews', value: sessions.length, icon: Brain, color: 'text-indigo-400', bg: 'bg-indigo-500/10' },
+            { label: 'Average Score', value: `${sessions.length > 0 ? Math.round(sessions.reduce((acc, s) => acc + s.overall_score, 0) / sessions.length) : 0}%`, icon: Trophy, color: 'text-amber-400', bg: 'bg-amber-500/10' },
+            { label: 'Completed', value: sessions.filter(s => s.status === 'completed').length, icon: CheckCircle, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
+            { label: 'Success Rate', value: `${sessions.length > 0 ? Math.round((sessions.filter(s => s.overall_score >= 70).length / sessions.length) * 100) : 0}%`, icon: TrendingUp, color: 'text-violet-400', bg: 'bg-violet-500/10' },
+          ].map((stat, i) => (
+            <motion.div
+              key={stat.label}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1 }}
+              className="glass-card p-6 rounded-2xl border border-slate-800/50"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div className={`p-3 rounded-xl ${stat.bg}`}>
+                  <stat.icon className={`h-6 w-6 ${stat.color}`} />
+                </div>
+              </div>
+              <div className="text-3xl font-bold text-white mb-1">{stat.value}</div>
+              <div className="text-sm text-slate-400 font-medium">{stat.label}</div>
+            </motion.div>
+          ))}
         </div>
 
-        {/* Main Content with Sidebar */}
-        <div className="grid grid-cols-12 gap-8 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
           {/* Main Content */}
-          <div className="col-span-8 space-y-6">
-            {/* Quick Actions */}
-            <div className="bg-white border border-gray-200 rounded-lg p-6">
-              <h2 className="text-lg font-medium text-gray-900 mb-4">Quick Actions</h2>
-              <div className="space-y-3">
-                <button
-                  onClick={startNewInterview}
-                  className="w-full bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition-colors text-left flex items-center"
-                >
-                  <Plus className="h-4 w-4 mr-3" />
-                  Start New Interview
-                </button>
-                <button className="w-full bg-gray-50 text-gray-700 px-4 py-3 rounded-lg hover:bg-gray-100 transition-colors text-left flex items-center">
-                  <BookOpen className="h-4 w-4 mr-3" />
-                  View Learning Path
-                </button>
-              </div>
-            </div>
+          <div className="lg:col-span-8 space-y-8">
+            {/* Quick Actions removed/merged - keeping streamlined */}
 
             {/* Recent Activity */}
-            <div className="bg-white border border-gray-200 rounded-lg p-6">
-              <h2 className="text-lg font-medium text-gray-900 mb-4">Recent Activity</h2>
-              <div className="space-y-4">
-                {sessions.slice(0, 3).map((session) => (
-                  <div key={session.id} className="flex items-center justify-between py-3 border-b border-gray-100 last:border-0">
-                    <div>
-                      <div className="font-medium text-gray-900">{session.role}</div>
-                      <div className="text-sm text-gray-500">
-                        {new Date(session.created_at).toLocaleDateString()}
-                      </div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="glass-card rounded-2xl border border-slate-800/50 overflow-hidden"
+            >
+              <div className="p-6 border-b border-slate-800/50 flex justify-between items-center bg-slate-900/40">
+                <h2 className="text-lg font-bold text-white flex items-center gap-2">
+                  <Clock className="h-5 w-5 text-slate-400" /> Recent Activity
+                </h2>
+              </div>
+
+              <div className="divide-y divide-slate-800/50">
+                {sessions.length === 0 ? (
+                  <div className="p-12 text-center">
+                    <div className="w-16 h-16 bg-slate-800/50 rounded-full flex items-center justify-center mx-auto mb-4 border border-slate-700">
+                      <Calendar className="h-8 w-8 text-slate-500" />
                     </div>
-                    <div className="text-right">
-                      <div className="font-medium text-gray-900">{session.overall_score}%</div>
-                      <div className={`text-sm ${
-                        session.status === 'completed' ? 'text-green-600' : 'text-yellow-600'
-                      }`}>
-                        {session.status}
+                    <h3 className="text-lg font-medium text-white mb-2">No interviews yet</h3>
+                    <p className="text-slate-500 mb-6">Start your first interview to see your progress here</p>
+                    <button
+                      onClick={startNewInterview}
+                      className="text-indigo-400 hover:text-indigo-300 font-medium transition-colors"
+                    >
+                      Start Interview →
+                    </button>
+                  </div>
+                ) : (
+                  sessions.slice(0, 5).map((session, i) => (
+                    <motion.div
+                      key={session.id}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.1 * i }}
+                      className="p-6 hover:bg-slate-800/30 transition-colors group cursor-pointer"
+                    >
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <div className="flex items-center gap-3 mb-1">
+                            <h3 className="font-semibold text-white group-hover:text-indigo-400 transition-colors">{session.role}</h3>
+                            <span className={`px-2 py-0.5 text-[10px] uppercase tracking-wide font-bold rounded-full ${session.status === 'completed'
+                                ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+                                : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
+                              }`}>
+                              {session.status}
+                            </span>
+                          </div>
+                          <p className="text-sm text-slate-500 mb-2">{session.experience_level} • {new Date(session.created_at).toLocaleDateString()}</p>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-xl font-bold text-white mb-1">
+                            {session.overall_score}%
+                          </div>
+                          <div className={`text-xs font-medium ${session.overall_score >= 80 ? 'text-emerald-400' :
+                              session.overall_score >= 60 ? 'text-amber-400' : 'text-rose-400'
+                            }`}>
+                            Score
+                          </div>
+                        </div>
                       </div>
+                    </motion.div>
+                  ))
+                )}
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Sidebar */}
+          <div className="lg:col-span-4 space-y-6">
+            {/* Performance Overview */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3 }}
+              className="glass-card rounded-2xl border border-slate-800/50 p-6"
+            >
+              <h3 className="text-lg font-bold text-white mb-6">Skill Analysis</h3>
+              <div className="space-y-6">
+                {[
+                  { label: 'Technical Accuracy', score: 78, color: 'bg-indigo-500' },
+                  { label: 'Communication', score: 92, color: 'bg-emerald-500' },
+                  { label: 'Problem Solving', score: 85, color: 'bg-violet-500' }
+                ].map((skill) => (
+                  <div key={skill.label}>
+                    <div className="flex justify-between text-sm mb-2">
+                      <span className="text-slate-400">{skill.label}</span>
+                      <span className="text-white font-medium">{skill.score}%</span>
+                    </div>
+                    <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: `${skill.score}%` }}
+                        transition={{ duration: 1, delay: 0.5 }}
+                        className={`h-full ${skill.color}`}
+                      />
                     </div>
                   </div>
                 ))}
-                {sessions.length === 0 && (
-                  <div className="text-center py-8 text-gray-500">
-                    No interviews completed yet
-                  </div>
-                )}
               </div>
-            </div>
-          </div>
-          
-          {/* Sidebar */}
-          <div className="col-span-4 space-y-6">
-            {/* Performance Overview */}
-            <div className="bg-white border border-gray-200 rounded-lg p-6">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Performance</h3>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Technical</span>
-                  <div className="flex items-center">
-                    <div className="w-16 h-1.5 bg-gray-200 rounded-full mr-2">
-                      <div className="w-3/4 h-1.5 bg-blue-600 rounded-full"></div>
-                    </div>
-                    <span className="text-sm text-gray-900">78%</span>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Communication</span>
-                  <div className="flex items-center">
-                    <div className="w-16 h-1.5 bg-gray-200 rounded-full mr-2">
-                      <div className="w-4/5 h-1.5 bg-green-600 rounded-full"></div>
-                    </div>
-                    <span className="text-sm text-gray-900">82%</span>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Problem Solving</span>
-                  <div className="flex items-center">
-                    <div className="w-16 h-1.5 bg-gray-200 rounded-full mr-2">
-                      <div className="w-4/5 h-1.5 bg-purple-600 rounded-full"></div>
-                    </div>
-                    <span className="text-sm text-gray-900">85%</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            {/* Learning Path */}
-            <div className="bg-white border border-gray-200 rounded-lg p-6">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Learning Path</h3>
-              <div className="space-y-3">
-                <div className="flex items-center">
-                  <CheckCircle className="h-4 w-4 text-green-600 mr-3" />
-                  <div className="flex-1">
-                    <div className="text-sm text-gray-900">JavaScript Basics</div>
-                    <div className="text-xs text-gray-500">Completed</div>
-                  </div>
-                </div>
-                <div className="flex items-center">
-                  <div className="h-4 w-4 border-2 border-blue-600 rounded-full mr-3 flex items-center justify-center">
-                    <div className="h-1.5 w-1.5 bg-blue-600 rounded-full"></div>
-                  </div>
-                  <div className="flex-1">
-                    <div className="text-sm text-gray-900">React Fundamentals</div>
-                    <div className="text-xs text-gray-500">In Progress</div>
-                  </div>
-                </div>
-                <div className="flex items-center opacity-50">
-                  <div className="h-4 w-4 border-2 border-gray-300 rounded-full mr-3"></div>
-                  <div className="flex-1">
-                    <div className="text-sm text-gray-700">System Design</div>
-                    <div className="text-xs text-gray-500">Locked</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            {/* Insights */}
-            <div className="bg-white border border-gray-200 rounded-lg p-6">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Insights</h3>
-              <div className="space-y-3">
-                <div className="p-3 bg-blue-50 rounded-lg">
-                  <div className="text-sm text-gray-900">Focus Area</div>
-                  <div className="text-xs text-gray-600 mt-1">Improve algorithm complexity understanding</div>
-                </div>
-                <div className="p-3 bg-green-50 rounded-lg">
-                  <div className="text-sm text-gray-900">Strength</div>
-                  <div className="text-xs text-gray-600 mt-1">Excellent communication skills</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+            </motion.div>
 
-        {/* Interview History */}
-        <div className="bg-white border border-gray-200 rounded-lg">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-medium text-gray-900">Interview History</h2>
-              <button className="text-blue-600 hover:text-blue-700 text-sm">
-                View All
-              </button>
-            </div>
-          </div>
-          
-          <div className="divide-y divide-gray-200">
-            {sessions.length === 0 ? (
-              <div className="px-6 py-12 text-center">
-                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Calendar className="h-8 w-8 text-gray-400" />
-                </div>
-                <h3 className="text-lg font-medium text-gray-900 mb-2">No interviews yet</h3>
-                <p className="text-gray-500 mb-6">Start your first interview to see your progress here</p>
-                <button
-                  onClick={startNewInterview}
-                  className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-                >
-                  Start Interview
-                </button>
-              </div>
-            ) : (
-              sessions.map((session) => (
-                <div key={session.id} className="px-6 py-6 hover:bg-gray-50 transition-colors">
-                  <div className="flex justify-between items-start">
-                    <div className="flex-1">
-                      <div className="flex items-center mb-2">
-                        <h3 className="font-medium text-gray-900">{session.role}</h3>
-                        <span className={`ml-3 px-2 py-1 text-xs rounded-full ${
-                          session.status === 'completed' 
-                            ? 'bg-green-100 text-green-800' 
-                            : 'bg-yellow-100 text-yellow-800'
-                        }`}>
-                          {session.status}
-                        </span>
-                      </div>
-                      <p className="text-gray-600 mb-1">{session.experience_level}</p>
-                      <div className="flex items-center text-sm text-gray-500 mb-3">
-                        <Clock className="h-4 w-4 mr-1" />
-                        {new Date(session.created_at).toLocaleDateString('en-US', {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric'
-                        })}
-                      </div>
-                      <div className="flex items-center space-x-4">
-                        <button className="text-blue-600 hover:text-blue-700 text-sm">
-                          View Details
-                        </button>
-                        <button className="text-gray-600 hover:text-gray-700 text-sm">
-                          Download Report
-                        </button>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-xl font-medium text-gray-900 mb-1">
-                        {session.overall_score}%
-                      </div>
-                      <div className={`text-sm mb-2 ${
-                        session.overall_score >= 80 ? 'text-green-600' :
-                        session.overall_score >= 60 ? 'text-yellow-600' : 'text-red-600'
-                      }`}>
-                        {session.overall_score >= 80 ? 'Excellent' :
-                         session.overall_score >= 60 ? 'Good' : 'Needs Improvement'}
-                      </div>
-                    </div>
+            {/* Learning Path */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4 }}
+              className="glass-card rounded-2xl border border-slate-800/50 p-6"
+            >
+              <h3 className="text-lg font-bold text-white mb-4">Recommended Path</h3>
+              <div className="space-y-4">
+                <div className="flex items-center gap-4 p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+                  <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <div>
+                    <div className="text-sm font-medium text-emerald-200">System Design: Scaling</div>
+                    <div className="text-xs text-emerald-500/60">Next Module</div>
                   </div>
                 </div>
-              ))
-            )}
+                <div className="flex items-center gap-4 p-3 rounded-xl bg-slate-800/30 border border-slate-800">
+                  <div className="h-2 w-2 rounded-full bg-slate-600" />
+                  <div>
+                    <div className="text-sm font-medium text-slate-400">Advanced React Patterns</div>
+                    <div className="text-xs text-slate-600">Locked</div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Insights */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.5 }}
+              className="glass-card rounded-2xl border border-slate-800/50 p-6"
+            >
+              <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                <Sparkles className="h-4 w-4 text-amber-400" /> AI Insights
+              </h3>
+              <div className="space-y-3">
+                <div className="p-3 bg-indigo-500/10 rounded-xl border border-indigo-500/20">
+                  <div className="text-xs text-indigo-300 font-medium mb-1">Focus Area</div>
+                  <div className="text-sm text-white">Review Big O notation for graph algorithms.</div>
+                </div>
+                <div className="p-3 bg-emerald-500/10 rounded-xl border border-emerald-500/20">
+                  <div className="text-xs text-emerald-300 font-medium mb-1">Strength</div>
+                  <div className="text-sm text-white">Excellent structured answers in behavioral rounds.</div>
+                </div>
+              </div>
+
+            </motion.div>
+
           </div>
         </div>
       </div>
