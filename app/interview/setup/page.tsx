@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import AuthGuard from '@/components/ui/AuthGuard';
@@ -210,5 +210,9 @@ function InterviewSetup() {
 }
 
 export default function ProtectedInterviewSetup() {
-  return <InterviewSetup />;
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-black" />}>
+      <InterviewSetup />
+    </Suspense>
+  );
 }

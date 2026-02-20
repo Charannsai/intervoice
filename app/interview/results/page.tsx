@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import AuthGuard from '@/components/ui/AuthGuard';
 import { Award, TrendingUp, Clock, CheckCircle2, Download, Home, RotateCcw, AlertCircle } from 'lucide-react';
@@ -199,7 +199,9 @@ function InterviewResults() {
 export default function ProtectedInterviewResults() {
   return (
     <AuthGuard>
-      <InterviewResults />
+      <Suspense fallback={<div className="min-h-screen bg-black" />}>
+        <InterviewResults />
+      </Suspense>
     </AuthGuard>
   );
 }

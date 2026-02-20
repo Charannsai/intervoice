@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { InterviewSession, InterviewRound } from '@/types';
 import MCQRound from '@/components/rounds/MCQRound';
@@ -8,7 +8,7 @@ import VoiceRound from '@/components/rounds/VoiceRound';
 import CodingRound from '@/components/rounds/CodingRound';
 import { ArrowLeft, CheckCircle2, XCircle, ArrowRight } from 'lucide-react';
 
-export default function RoundPage() {
+function RoundPageContent() {
   const [session, setSession] = useState<InterviewSession | null>(null);
   const [currentRound, setCurrentRound] = useState<InterviewRound | null>(null);
   const [roundIndex, setRoundIndex] = useState(0);
@@ -122,8 +122,8 @@ export default function RoundPage() {
             <button
               onClick={proceedToNext}
               className={`w-full py-3 rounded-lg font-medium text-sm flex items-center justify-center gap-2 ${passed
-                  ? 'bg-white text-black hover:bg-zinc-200'
-                  : 'bg-zinc-800 text-white hover:bg-zinc-700'
+                ? 'bg-white text-black hover:bg-zinc-200'
+                : 'bg-zinc-800 text-white hover:bg-zinc-700'
                 }`}
             >
               {passed && roundIndex < session.rounds.length - 1
@@ -202,5 +202,13 @@ export default function RoundPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function RoundPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-black" />}>
+      <RoundPageContent />
+    </Suspense>
   );
 }
