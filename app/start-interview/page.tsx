@@ -3,8 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import AuthGuard from '@/components/ui/AuthGuard';
-import { Upload, Briefcase, Clock, Target, FileText, Check, ArrowRight } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Upload, ArrowRight, ArrowLeft } from 'lucide-react';
 
 const jobRoles = [
   { id: 'frontend', title: 'Frontend Developer', category: 'Engineering' },
@@ -25,6 +24,7 @@ const experienceLevels = [
 ];
 
 function StartInterview() {
+  const [step, setStep] = useState(1);
   const [selectedRole, setSelectedRole] = useState('');
   const [selectedLevel, setSelectedLevel] = useState('');
   const [resume, setResume] = useState<File | null>(null);
@@ -48,123 +48,168 @@ function StartInterview() {
     }
   };
 
+  const handleBackToDashboard = () => {
+    const hasChanges = selectedRole || selectedLevel || resume;
+    if (hasChanges) {
+      if (window.confirm("You have unsaved changes. Are you sure you want to return to the dashboard?")) {
+        router.push('/dashboard');
+      }
+    } else {
+      router.push('/dashboard');
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-black pt-24 pb-12 px-6 text-white">
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="mb-12">
+    <div className="min-h-screen bg-black pt-24 pb-12 px-6 text-white flex flex-col items-center">
+      <div className="w-full max-w-3xl">
+        {/* Header with Back Button */}
+        <div className="flex items-center gap-4 mb-10">
+          <button 
+            onClick={handleBackToDashboard}
+            className="p-2 -ml-2 text-zinc-400 hover:text-white hover:bg-zinc-900 rounded-lg transition-colors flex items-center gap-2"
+          >
+            <ArrowLeft className="w-5 h-5" />
+            <span className="text-sm font-medium">Dashboard</span>
+          </button>
+        </div>
+
+        <div className="mb-8">
           <h1 className="text-3xl font-bold text-white mb-2 tracking-tight">
             New Simulation
           </h1>
-          <p className="text-zinc-400 max-w-2xl text-lg">
-            Configure your session parameters. Our AI will generate a tailored interview pipeline.
+          <p className="text-zinc-400 text-sm">
+            Step {step} of 3
           </p>
         </div>
 
-        <div className="space-y-12">
-          {/* Role Selection */}
-          <section>
-            <h2 className="text-sm font-semibold text-zinc-500 uppercase tracking-wider mb-6 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-full bg-zinc-900 border border-zinc-700 flex items-center justify-center text-xs text-white">1</span>
-              Target Role
-            </h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              {jobRoles.map((role) => (
-                <button
-                  key={role.id}
-                  onClick={() => setSelectedRole(role.id)}
-                  className={`p-4 border rounded-lg text-left transition-all ${selectedRole === role.id
-                    ? 'bg-white text-black border-white ring-2 ring-white/20'
-                    : 'bg-black border-zinc-800 text-zinc-400 hover:border-zinc-600 hover:text-white'
-                    }`}
-                >
-                  <div className="font-medium text-sm mb-1">{role.title}</div>
-                  <div className={`text-xs ${selectedRole === role.id ? 'text-zinc-500' : 'text-zinc-600'}`}>{role.category}</div>
-                </button>
-              ))}
-            </div>
-          </section>
+        <div className="bg-zinc-900/40 border border-zinc-800 rounded-xl p-8 min-h-[400px] flex flex-col justify-between relative overflow-hidden">
+          {/* Progress Bar */}
+          <div className="absolute top-0 left-0 w-full h-1 bg-zinc-800">
+            <div 
+              className="h-full bg-white transition-all duration-300" 
+              style={{ width: `${(step / 3) * 100}%` }}
+            />
+          </div>
 
-          {/* Experience Level */}
-          <section>
-            <h2 className="text-sm font-semibold text-zinc-500 uppercase tracking-wider mb-6 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-full bg-zinc-900 border border-zinc-700 flex items-center justify-center text-xs text-white">2</span>
-              Experience Level
-            </h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              {experienceLevels.map((level) => (
-                <button
-                  key={level.id}
-                  onClick={() => setSelectedLevel(level.id)}
-                  className={`p-4 border rounded-lg text-left transition-all ${selectedLevel === level.id
-                    ? 'bg-white text-black border-white ring-2 ring-white/20'
-                    : 'bg-black border-zinc-800 text-zinc-400 hover:border-zinc-600 hover:text-white'
-                    }`}
-                >
-                  <div className="font-medium text-sm mb-1">{level.title}</div>
-                  <div className={`text-xs ${selectedLevel === level.id ? 'text-zinc-500' : 'text-zinc-600'}`}>{level.subtitle}</div>
-                </button>
-              ))}
-            </div>
-          </section>
+          <div className="pt-4 flex-grow">
+            {step === 1 && (
+              <section className="animate-fade-in">
+                <h2 className="text-xl font-medium text-white mb-6">Select your target role</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {jobRoles.map((role) => (
+                    <button
+                      key={role.id}
+                      onClick={() => setSelectedRole(role.id)}
+                      className={`p-4 border rounded-lg text-left transition-all ${selectedRole === role.id
+                        ? 'bg-white text-black border-white ring-2 ring-white/20'
+                        : 'bg-black border-zinc-800 text-zinc-400 hover:border-zinc-600 hover:text-white'
+                        }`}
+                    >
+                      <div className="font-medium text-sm mb-1">{role.title}</div>
+                      <div className={`text-xs ${selectedRole === role.id ? 'text-zinc-500' : 'text-zinc-600'}`}>{role.category}</div>
+                    </button>
+                  ))}
+                </div>
+              </section>
+            )}
 
-          {/* Resume Upload */}
-          <section>
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-sm font-semibold text-zinc-500 uppercase tracking-wider flex items-center gap-2">
-                <span className="w-6 h-6 rounded-full bg-zinc-900 border border-zinc-700 flex items-center justify-center text-xs text-white">3</span>
-                Context 
-              </h2>
-            </div>
+            {step === 2 && (
+              <section className="animate-fade-in">
+                <h2 className="text-xl font-medium text-white mb-6">What is your experience level?</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {experienceLevels.map((level) => (
+                    <button
+                      key={level.id}
+                      onClick={() => setSelectedLevel(level.id)}
+                      className={`p-4 border rounded-lg text-left transition-all flex justify-between items-center ${selectedLevel === level.id
+                        ? 'bg-white text-black border-white ring-2 ring-white/20'
+                        : 'bg-black border-zinc-800 text-zinc-400 hover:border-zinc-600 hover:text-white'
+                        }`}
+                    >
+                      <div>
+                        <div className="font-medium text-sm mb-1">{level.title}</div>
+                        <div className={`text-xs ${selectedLevel === level.id ? 'text-zinc-500' : 'text-zinc-600'}`}>{level.subtitle}</div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </section>
+            )}
 
-            <div className={`border border-dashed rounded-lg p-8 text-center transition-all ${resume ? 'border-zinc-700 bg-zinc-900/30' : 'border-zinc-800 hover:border-zinc-600 hover:bg-zinc-900/10'
-              }`}>
-              <Upload className={`h-8 w-8 mx-auto mb-4 ${resume ? 'text-white' : 'text-zinc-600'}`} />
-              <div className="mb-6">
-                {resume ? (
-                  <div>
-                    <span className="text-white font-medium text-sm block mb-1">{resume.name}</span>
-                    <span className="text-zinc-500 text-xs">{(resume.size / 1024 / 1024).toFixed(2)} MB</span>
+            {step === 3 && (
+              <section className="animate-fade-in">
+                <h2 className="text-xl font-medium text-white mb-6">Upload your resume for context</h2>
+                <div className={`border border-dashed rounded-lg p-12 text-center transition-all ${resume ? 'border-zinc-700 bg-zinc-900/30' : 'border-zinc-800 hover:border-zinc-600 hover:bg-zinc-900/10'}`}>
+                  <Upload className={`h-8 w-8 mx-auto mb-4 ${resume ? 'text-white' : 'text-zinc-600'}`} />
+                  <div className="mb-6">
+                    {resume ? (
+                      <div>
+                        <span className="text-white font-medium text-sm block mb-1">{resume.name}</span>
+                        <span className="text-zinc-500 text-xs">{(resume.size / 1024 / 1024).toFixed(2)} MB</span>
+                      </div>
+                    ) : (
+                      <div>
+                        <p className="text-sm font-medium text-zinc-300 mb-1">Upload Resume (PDF, DOCX)</p>
+                        <p className="text-xs text-zinc-500 mt-2 max-w-xs mx-auto">Providing your resume allows our AI to tailor the mock interview exactly to your stack and experience.</p>
+                      </div>
+                    )}
                   </div>
-                ) : (
-                  <div>
-                    <p className="text-sm font-medium text-zinc-300 mb-1">Upload Resume (PDF)</p>
-                    <p className="text-xs text-zinc-500">We'll parse your stack to tailor specific questions.</p>
-                  </div>
-                )}
-              </div>
 
-              <input
-                type="file"
-                accept=".pdf,.doc,.docx"
-                onChange={handleFileUpload}
-                className="hidden"
-                id="resume-upload"
-              />
-              <label
-                htmlFor="resume-upload"
-                className={`px-4 py-2 rounded-md cursor-pointer font-medium text-sm transition-all inline-flex items-center gap-2 ${resume
-                  ? 'text-zinc-400 hover:text-white'
-                  : 'bg-zinc-800 text-white hover:bg-zinc-700'
-                  }`}
-              >
-                {resume ? 'Replace File' : 'Select File'}
-              </label>
-            </div>
-          </section>
+                  <input
+                    type="file"
+                    accept=".pdf,.doc,.docx"
+                    onChange={handleFileUpload}
+                    className="hidden"
+                    id="resume-upload"
+                  />
+                  <label
+                    htmlFor="resume-upload"
+                    className={`px-4 py-2 rounded-md cursor-pointer font-medium text-sm transition-all inline-flex items-center gap-2 ${resume
+                      ? 'text-zinc-400 hover:text-white'
+                      : 'bg-zinc-800 text-white hover:bg-zinc-700'
+                      }`}
+                  >
+                    {resume ? 'Replace File' : 'Select File'}
+                  </label>
+                </div>
+              </section>
+            )}
+          </div>
 
-          {/* Start Button */}
-          <div className="pt-8 border-t border-zinc-800/50">
+          {/* Navigation Buttons for Wizard */}
+          <div className="pt-6 mt-6 flex items-center justify-between border-t border-zinc-800/50">
             <button
-              onClick={startInterview}
-              disabled={!selectedRole || !selectedLevel}
-              className={`w-full py-4 rounded-lg text-base font-medium transition-all flex items-center justify-center gap-2 ${selectedRole && selectedLevel
-                ? 'bg-white text-black hover:bg-zinc-200'
-                : 'bg-zinc-900 text-zinc-500 cursor-not-allowed border border-zinc-800'
-                }`}
+              onClick={() => setStep(step - 1)}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${step === 1 ? 'invisible' : 'text-zinc-400 hover:text-white hover:bg-zinc-800'}`}
             >
-              Generate Protocol <ArrowRight className="h-4 w-4" />
+              Previous Step
             </button>
+            
+            {step < 3 ? (
+              <button
+                onClick={() => setStep(step + 1)}
+                disabled={(step === 1 && !selectedRole) || (step === 2 && !selectedLevel)}
+                className={`px-6 py-2 flex items-center gap-2 rounded-lg text-sm font-medium transition-all ${
+                  ((step === 1 && selectedRole) || (step === 2 && selectedLevel))
+                    ? 'bg-white text-black hover:bg-zinc-200'
+                    : 'bg-zinc-800 text-zinc-500 cursor-not-allowed'
+                }`}
+              >
+                Next Step <ArrowRight className="w-4 h-4" />
+              </button>
+            ) : (
+              <button
+                onClick={startInterview}
+                disabled={!selectedRole || !selectedLevel}
+                className={`px-6 py-2 flex items-center gap-2 rounded-lg text-sm font-medium transition-all ${
+                  selectedRole && selectedLevel
+                    ? 'bg-white text-black hover:bg-zinc-200'
+                    : 'bg-zinc-800 text-zinc-500 cursor-not-allowed'
+                }`}
+              >
+                Assemble Protocol <ArrowRight className="w-4 h-4" />
+              </button>
+            )}
           </div>
         </div>
       </div>
