@@ -89,7 +89,7 @@ function Dashboard() {
           </div>
           <button
             onClick={startNewInterview}
-            className="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-md transition-colors flex items-center gap-2 font-medium text-sm"
+            className="bg-black dark:bg-white hover:bg-zinc-800 dark:hover:bg-zinc-200 text-white dark:text-black px-4 py-2 rounded-md transition-colors flex items-center gap-2 font-medium text-sm"
           >
             <Plus className="h-4 w-4" />
             New Session
@@ -118,7 +118,7 @@ function Dashboard() {
 
           {/* Recent Activity (Wide) */}
           <div className="lg:col-span-2 space-y-6">
-            <h2 className="text-lg font-semibold text-white">Recent Activity</h2>
+            <h2 className="text-lg font-semibold text-black dark:text-white">Recent Activity</h2>
             <div className="bg-zinc-100 dark:bg-zinc-900/30 border border-zinc-300 dark:border-zinc-800 rounded-lg overflow-hidden">
               {sessions.length === 0 ? (
                 <div className="p-12 text-center">
@@ -164,7 +164,7 @@ function Dashboard() {
                       <span className="text-black dark:text-white font-mono">{skill.val}/100</span>
                     </div>
                     <div className="h-1.5 bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden">
-                      <div className="h-full bg-white transition-all duration-1000" style={{ width: `${skill.val}%` }} />
+                      <div className="h-full bg-black dark:bg-white transition-all duration-1000" style={{ width: `${skill.val}%` }} />
                     </div>
                   </div>
                 ))}
@@ -184,7 +184,7 @@ function Dashboard() {
                     <p className="text-xs text-zinc-500 leading-relaxed mb-3">
                       Based on your last session, we recommend reviewing BFS/DFS implementation patterns.
                     </p>
-                    <button className="text-xs text-black dark:text-white border-b border-white/30 hover:border-white pb-0.5 transition-colors">Start Module</button>
+                    <button className="text-xs text-black dark:text-white font-medium border-b border-black/30 dark:border-white/30 hover:border-black dark:hover:border-white pb-0.5 transition-colors">Start Module</button>
                   </div>
                 </div>
               </div>
