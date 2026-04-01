@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import AuthGuard from '@/components/ui/AuthGuard';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import { User } from '@supabase/supabase-js';
 import { motion } from 'framer-motion';
 import {
@@ -73,14 +74,7 @@ function Dashboard() {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-black text-white">
-        <div className="flex flex-col items-center">
-          <div className="h-4 w-4 bg-white animate-ping rounded-full mb-4"></div>
-          <div className="text-zinc-500 text-sm font-mono">Loading data...</div>
-        </div>
-      </div>
-    );
+    return <LoadingSpinner fullScreen text="Loading data..." />;
   }
 
   return (

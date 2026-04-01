@@ -7,6 +7,7 @@ import AuthGuard from '@/components/ui/AuthGuard';
 import { InterviewRound } from '@/types';
 import { Clock, CheckCircle, Play, Terminal, Mic, BarChart2, List } from 'lucide-react';
 import { motion } from 'framer-motion';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 function InterviewSetup() {
   const [rounds, setRounds] = useState<InterviewRound[]>([]);
@@ -98,14 +99,7 @@ function InterviewSetup() {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-black px-4 text-white">
-        <div className="flex flex-col items-center">
-          <div className="h-4 w-4 bg-white animate-ping rounded-full mb-4"></div>
-          <p className="text-zinc-500 font-mono text-sm">Building Pipeline...</p>
-        </div>
-      </div>
-    );
+    return <LoadingSpinner fullScreen text="Building Pipeline..." />;
   }
 
   if (error) {
