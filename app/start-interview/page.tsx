@@ -213,8 +213,9 @@ function StartInterview() {
           </div>
         </div>
       </div>
+    </div>
 
-      {/* Confirmation Modal */}
+    {/* Confirmation Modal */}
       {showConfirmModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
           <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 max-w-sm w-full shadow-2xl animate-in fade-in zoom-in-95 duration-200">
