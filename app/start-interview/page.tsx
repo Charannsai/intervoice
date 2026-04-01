@@ -28,6 +28,7 @@ function StartInterview() {
   const [selectedRole, setSelectedRole] = useState('');
   const [selectedLevel, setSelectedLevel] = useState('');
   const [resume, setResume] = useState<File | null>(null);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const router = useRouter();
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,17 +52,16 @@ function StartInterview() {
   const handleBackToDashboard = () => {
     const hasChanges = selectedRole || selectedLevel || resume;
     if (hasChanges) {
-      if (window.confirm("You have unsaved changes. Are you sure you want to return to the dashboard?")) {
-        router.push('/dashboard');
-      }
+      setShowConfirmModal(true);
     } else {
       router.push('/dashboard');
     }
   };
 
   return (
-    <div className="min-h-screen bg-black pt-24 pb-12 px-6 text-white flex flex-col items-center">
-      <div className="w-full max-w-3xl">
+    <>
+      <div className="min-h-screen bg-black pt-24 pb-12 px-6 text-white flex flex-col items-center">
+        <div className="w-full max-w-3xl">
         {/* Header with Back Button */}
         <div className="flex items-center gap-4 mb-10">
           <button 
@@ -213,7 +213,33 @@ function StartInterview() {
           </div>
         </div>
       </div>
-    </div>
+
+      {/* Confirmation Modal */}
+      {showConfirmModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 max-w-sm w-full shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+            <h3 className="text-xl font-semibold text-white mb-2">Discard Session?</h3>
+            <p className="text-zinc-400 text-sm mb-6">
+              You have unsaved configuration changes. Are you sure you want to return to the dashboard and discard them?
+            </p>
+            <div className="flex items-center justify-end gap-3">
+              <button 
+                onClick={() => setShowConfirmModal(false)}
+                className="px-4 py-2 rounded-lg text-sm font-medium text-zinc-300 hover:text-white hover:bg-zinc-800 transition-colors"
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={() => router.push('/dashboard')}
+                className="px-4 py-2 rounded-lg text-sm font-medium bg-white text-black hover:bg-zinc-200 transition-colors"
+              >
+                Discard & Return
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
