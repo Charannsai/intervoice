@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Question, MCQResponse } from '@/types';
 import { Clock, CheckCircle2, Circle } from 'lucide-react';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 interface MCQRoundProps {
   roundName: string;
@@ -94,10 +95,7 @@ export default function MCQRound({ roundName, focus, questionCount, onComplete }
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white mx-auto mb-4"></div>
-          <p className="text-zinc-500 text-sm font-mono">Loading module...</p>
-        </div>
+        <LoadingSpinner text="Loading module..." />
       </div>
     );
   }
