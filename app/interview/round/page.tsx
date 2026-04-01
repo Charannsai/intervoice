@@ -7,6 +7,7 @@ import MCQRound from '@/components/rounds/MCQRound';
 import VoiceRound from '@/components/rounds/VoiceRound';
 import CodingRound from '@/components/rounds/CodingRound';
 import { ArrowLeft, CheckCircle2, XCircle, ArrowRight } from 'lucide-react';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 function RoundPageContent() {
   const [session, setSession] = useState<InterviewSession | null>(null);
@@ -77,14 +78,7 @@ function RoundPageContent() {
   };
 
   if (!session || !currentRound) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-black text-white">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white mx-auto mb-4"></div>
-          <p className="text-zinc-500 font-mono text-sm">Loading session...</p>
-        </div>
-      </div>
-    );
+    return <LoadingSpinner fullScreen text="Loading session..." />;
   }
 
   if (showResult) {
