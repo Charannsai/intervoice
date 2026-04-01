@@ -90,6 +90,36 @@ export class GeminiService {
     }
   }
 
+  async recommendCourses(role: string, context: string): Promise<any[]> {
+    const prompt = `Based on a user interviewing for ${role} who needs to improve on: "${context}", recommend exactly 2 free, high-quality online courses or resources (like freeCodeCamp, YouTube playlists, or official documentation) they should study.
+    Return ONLY a JSON array with objects containing fields: "title" (string), "provider" (string), "description" (short 1-sentence string), "url" (a realistic URL like https://www.youtube.com/results?search_query=...). Make sure URLs are valid formats.`;
+
+    try {
+      const result = await this.model.generateContent(prompt);
+      const response = await result.response;
+      const text = response.text();
+      const cleanText = text.replace(/```json\n?|```\n?/g, '').trim();
+      const parsed = JSON.parse(cleanText);
+      return Array.isArray(parsed) ? parsed : (parsed.courses || []);
+    } catch (error) {
+      console.error('Failed to parse recommendations:', error);
+      return [
+        {
+          title: 'System Design Interview Crash Course',
+          provider: 'YouTube',
+          description: 'A comprehensive crash course on system design fundamentals.',
+          url: 'https://www.youtube.com/results?search_query=system+design+interview+crash+course'
+        },
+        {
+          title: 'Data Structures and Algorithms',
+          provider: 'freeCodeCamp',
+          description: 'Full course on data structures and algorithms in JavaScript.',
+          url: 'https://www.youtube.com/watch?v=8hly31xKli0'
+        }
+      ];
+    }
+  }
+
   private getDefaultRounds(role: string): InterviewRound[] {
     return [
       {

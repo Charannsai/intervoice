@@ -10,7 +10,7 @@ import { motion } from 'framer-motion';
 import {
   Plus, Calendar, Activity,
   BarChart3, CheckCircle2, Clock,
-  ArrowRight, Terminal
+  ArrowRight, Terminal, BookOpen, ExternalLink, RefreshCw
 } from 'lucide-react';
 
 function Dashboard() {
@@ -25,6 +25,8 @@ function Dashboard() {
     completedRounds: 3,
     totalRounds: 5
   });
+  const [recommendations, setRecommendations] = useState<any[]>([]);
+  const [loadingRecommendations, setLoadingRecommendations] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -67,6 +69,33 @@ function Dashboard() {
     }
 
     setLoading(false);
+    
+    // Fetch dynamic recommendations after sessions load
+    const userRole = data && data.length > 0 ? data[0].role : userProfile.role;
+    const weaknessContext = data && data.length > 0 ? `the practical coding round for ${userRole}` : `${userRole} fundamentals`;
+    fetchRecommendations(userRole, weaknessContext);
+  };
+
+  const fetchRecommendations = async (role: string, context: string) => {
+    setLoadingRecommendations(true);
+    try {
+      const res = await fetch('/api/recommend-courses', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ role, context })
+      });
+      const data = await res.json();
+      if (data.courses) {
+        setRecommendations(data.courses);
+      } else {
+        setRecommendations([]);
+      }
+    } catch (e) {
+      console.error(e);
+      setRecommendations([]);
+    } finally {
+      setLoadingRecommendations(false);
+    }
   };
 
   const startNewInterview = () => {
@@ -173,20 +202,58 @@ function Dashboard() {
 
             {/* Next Steps */}
             <div>
-              <h2 className="text-lg font-semibold text-black dark:text-white mb-4">Recommended</h2>
-              <div className="bg-zinc-100 dark:bg-zinc-900/30 border border-zinc-300 dark:border-zinc-800 rounded-lg p-6">
-                <div className="flex items-start gap-3">
-                  <div className="mt-1">
-                    <Terminal className="h-4 w-4 text-blue-500" />
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-semibold text-black dark:text-white">Recommended Resources</h2>
+                {loadingRecommendations && <RefreshCw className="h-4 w-4 text-zinc-500 animate-spin" />}
+              </div>
+              
+              <div className="space-y-4">
+                {loadingRecommendations ? (
+                  // Loading skeletons
+                  [1, 2].map(i => (
+                    <div key={i} className="bg-zinc-100 dark:bg-zinc-900/30 border border-zinc-300 dark:border-zinc-800 rounded-lg p-5 animate-pulse">
+                      <div className="flex gap-3">
+                        <div className="w-5 h-5 bg-zinc-200 dark:bg-zinc-800 rounded mt-0.5"></div>
+                        <div className="flex-1">
+                          <div className="h-4 bg-zinc-200 dark:bg-zinc-800 rounded w-2/3 mb-2"></div>
+                          <div className="h-3 bg-zinc-200 dark:bg-zinc-800 rounded w-full mb-1"></div>
+                          <div className="h-3 bg-zinc-200 dark:bg-zinc-800 rounded w-4/5"></div>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                ) : recommendations.length === 0 ? (
+                  <div className="bg-zinc-100 dark:bg-zinc-900/30 border border-zinc-300 dark:border-zinc-800 rounded-lg p-6 text-center text-sm text-zinc-500">
+                    No recommendations found right now.
                   </div>
-                  <div>
-                    <h4 className="text-sm font-medium text-black dark:text-white mb-1">Graph Traversal Patterns</h4>
-                    <p className="text-xs text-zinc-500 leading-relaxed mb-3">
-                      Based on your last session, we recommend reviewing BFS/DFS implementation patterns.
-                    </p>
-                    <button className="text-xs text-black dark:text-white font-medium border-b border-black/30 dark:border-white/30 hover:border-black dark:hover:border-white pb-0.5 transition-colors">Start Module</button>
-                  </div>
-                </div>
+                ) : (
+                  recommendations.map((course, i) => (
+                    <div key={i} className="bg-zinc-100 dark:bg-zinc-900/30 border border-zinc-300 dark:border-zinc-800 rounded-lg p-5 hover:border-zinc-400 dark:hover:border-zinc-600 transition-colors group">
+                      <div className="flex items-start gap-3">
+                        <div className="mt-0.5 shrink-0">
+                          <BookOpen className="h-4 w-4 text-blue-600 dark:text-blue-500" />
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-medium text-black dark:text-white mb-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{course.title}</h4>
+                          <span className="inline-block px-1.5 py-0.5 rounded bg-zinc-200 dark:bg-zinc-800 text-[10px] font-medium text-zinc-600 dark:text-zinc-400 uppercase tracking-wider mb-2">
+                            {course.provider}
+                          </span>
+                          <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed mb-3">
+                            {course.description}
+                          </p>
+                          <a 
+                            href={course.url} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 text-xs text-black dark:text-white font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                          >
+                            Explore Course <ExternalLink className="h-3 w-3" />
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                )}
               </div>
             </div>
           </div>
