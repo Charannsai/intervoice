@@ -30,10 +30,25 @@ export default function HomePage() {
   useEffect(() => {
     const checkUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
-      setUser(user);
+      if (user) {
+        router.push('/dashboard');
+      } else {
+        setUser(null);
+      }
     };
     checkUser();
-  }, []);
+
+    // Listen for auth state changes as well to handle redirect immediately after login
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        router.push('/dashboard');
+      } else {
+        setUser(null);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [router]);
 
   const handleGetStarted = () => {
     if (user) {
