@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { User } from '@supabase/supabase-js';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -12,6 +12,7 @@ export default function UserMenu() {
   const [user, setUser] = useState<User | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
@@ -39,7 +40,9 @@ export default function UserMenu() {
     { icon: Palette, label: 'Theme', href: '/settings/theme' },
   ];
 
-  if (!user) return null;
+  const isInterviewFlow = pathname?.startsWith('/interview') || pathname?.startsWith('/start-interview');
+
+  if (!user || isInterviewFlow) return null;
 
   const initial = user.email ? user.email.charAt(0).toUpperCase() : 'U';
 

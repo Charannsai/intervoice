@@ -113,7 +113,7 @@ function StartInterview() {
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-sm font-semibold text-zinc-500 uppercase tracking-wider flex items-center gap-2">
                 <span className="w-6 h-6 rounded-full bg-zinc-900 border border-zinc-700 flex items-center justify-center text-xs text-white">3</span>
-                Context (Optional)
+                Context 
               </h2>
             </div>
 
