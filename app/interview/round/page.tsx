@@ -108,7 +108,7 @@ function RoundPageContent() {
           </div>
 
           <div className="bg-white dark:bg-black border border-zinc-300 dark:border-zinc-800 rounded-lg p-4 mb-8 text-left">
-            <h3 className="text-sm font-medium text-white">{currentRound.name}</h3>
+            <h3 className="text-sm font-medium text-black dark:text-white">{currentRound.name}</h3>
             <p className="text-xs text-zinc-500 mt-1">{currentRound.focus}</p>
           </div>
 
@@ -116,7 +116,7 @@ function RoundPageContent() {
             <button
               onClick={proceedToNext}
               className={`w-full py-3 rounded-lg font-medium text-sm flex items-center justify-center gap-2 ${passed
-                ? 'bg-white text-black hover:bg-zinc-200'
+                ? 'bg-black dark:bg-white text-white dark:text-black hover:bg-zinc-800 dark:hover:bg-zinc-200'
                 : 'bg-zinc-200 dark:bg-zinc-800 text-black dark:text-white hover:bg-zinc-700'
                 }`}
             >
@@ -145,7 +145,7 @@ function RoundPageContent() {
           <div className="flex items-center gap-4">
             <span className="text-sm font-semibold text-zinc-600 dark:text-zinc-400">Round {roundIndex + 1}/{session.rounds.length}</span>
             <div className="h-4 w-[1px] bg-zinc-200 dark:bg-zinc-800"></div>
-            <span className="text-sm font-medium text-white">{currentRound.name}</span>
+            <span className="text-sm font-medium text-black dark:text-white">{currentRound.name}</span>
           </div>
 
           <button

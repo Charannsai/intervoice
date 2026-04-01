@@ -123,7 +123,7 @@ function Dashboard() {
               {sessions.length === 0 ? (
                 <div className="p-12 text-center">
                   <p className="text-zinc-500 mb-4">No recent activity found.</p>
-                  <button onClick={startNewInterview} className="text-black dark:text-white underline text-sm">Start your first session</button>
+                  <button onClick={startNewInterview} className="text-blue-600 dark:text-blue-400 font-medium hover:text-blue-500 underline text-sm">Start your first session</button>
                 </div>
               ) : (
                 <div className="divide-y divide-zinc-800">

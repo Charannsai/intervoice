@@ -24,7 +24,7 @@ body {
   }
 
   .glass-button {
-    @apply bg-white text-black hover:bg-zinc-200 transition-colors font-medium border border-transparent;
+    @apply bg-black dark:bg-white text-white dark:text-black hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors font-medium border border-transparent;
   }
   
   .text-glow {

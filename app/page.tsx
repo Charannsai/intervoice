@@ -65,7 +65,7 @@ export default function HomePage() {
       <div className="fixed inset-0 z-0 bg-grid-white opacity-[0.03] pointer-events-none" />
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-24 px-6 z-10 border-b border-white/5">
+      <section className="relative pt-32 pb-24 px-6 z-10 border-b border-black dark:border-white/5">
         <div className="max-w-5xl mx-auto text-center">
           <motion.div
             initial="hidden"
@@ -106,7 +106,7 @@ export default function HomePage() {
             >
               <button
                 onClick={handleGetStarted}
-                className="px-8 py-3 bg-white text-black hover:bg-zinc-200 transition-colors rounded-lg font-medium text-lg flex items-center justify-center gap-2 min-w-[160px]"
+                className="px-8 py-3 bg-black dark:bg-white text-white dark:text-black hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors rounded-lg font-medium text-lg flex items-center justify-center gap-2 min-w-[160px]"
               >
                 Start Practicing <ArrowRight className="h-4 w-4" />
               </button>
@@ -119,7 +119,7 @@ export default function HomePage() {
       </section>
 
       {/* Features Grid */}
-      <section className="py-24 px-6 border-b border-white/5">
+      <section className="py-24 px-6 border-b border-black dark:border-white/5">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4">Engineered for performance</h2>
@@ -146,8 +146,8 @@ export default function HomePage() {
                 desc: "STAR method evaluation with tone and sentiment feedback via voice."
               }
             ].map((feature, i) => (
-              <div key={i} className="p-8 rounded-2xl bg-zinc-100 dark:bg-zinc-900/30 border border-white/5 hover:border-white/10 transition-colors">
-                <div className="h-12 w-12 bg-zinc-100 dark:bg-zinc-900 border border-white/10 rounded-xl flex items-center justify-center mb-6 text-white">
+              <div key={i} className="p-8 rounded-2xl bg-zinc-100 dark:bg-zinc-900/30 border border-black dark:border-white/5 hover:border-black dark:border-white/10 transition-colors">
+                <div className="h-12 w-12 bg-zinc-100 dark:bg-zinc-900 border border-black dark:border-white/10 rounded-xl flex items-center justify-center mb-6 text-black dark:text-white">
                   {feature.icon}
                 </div>
                 <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
@@ -161,12 +161,12 @@ export default function HomePage() {
       </section>
 
       {/* Bento Grid - Condensed */}
-      <section className="py-24 px-6 border-b border-white/5 bg-zinc-100 dark:bg-zinc-900/20">
+      <section className="py-24 px-6 border-b border-black dark:border-white/5 bg-zinc-100 dark:bg-zinc-900/20">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-[300px]">
 
             {/* Large Card */}
-            <div className="md:col-span-2 row-span-1 border border-white/10 bg-white dark:bg-black p-8 rounded-xl flex flex-col justify-between relative overflow-hidden group">
+            <div className="md:col-span-2 row-span-1 border border-black dark:border-white/10 bg-white dark:bg-black p-8 rounded-xl flex flex-col justify-between relative overflow-hidden group">
               <div className="absolute inset-0 bg-gradient-to-br from-zinc-900/50 to-transparent" />
               <div className="relative z-10">
                 <h3 className="text-2xl font-bold mb-2">Resume-Adaptive</h3>
@@ -180,7 +180,7 @@ export default function HomePage() {
             </div>
 
             {/* Tall Card */}
-            <div className="md:col-span-1 row-span-1 border border-white/10 bg-white dark:bg-black p-8 rounded-xl flex flex-col relative overflow-hidden">
+            <div className="md:col-span-1 row-span-1 border border-black dark:border-white/10 bg-white dark:bg-black p-8 rounded-xl flex flex-col relative overflow-hidden">
               <div className="h-10 w-10 bg-white/5 rounded-lg flex items-center justify-center mb-6">
                 <Zap className="h-5 w-5 text-yellow-500" />
               </div>
@@ -189,7 +189,7 @@ export default function HomePage() {
             </div>
 
             {/* Small Card */}
-            <div className="md:col-span-1 row-span-1 border border-white/10 bg-white dark:bg-black p-8 rounded-xl flex flex-col relative overflow-hidden">
+            <div className="md:col-span-1 row-span-1 border border-black dark:border-white/10 bg-white dark:bg-black p-8 rounded-xl flex flex-col relative overflow-hidden">
               <div className="h-10 w-10 bg-white/5 rounded-lg flex items-center justify-center mb-6">
                 <Globe className="h-5 w-5 text-blue-500" />
               </div>
@@ -213,7 +213,7 @@ export default function HomePage() {
       </section>
 
       {/* Simple CTA */}
-      <section className="py-24 px-6 border-t border-white/5">
+      <section className="py-24 px-6 border-t border-black dark:border-white/5">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to upgrade your career?</h2>
           <p className="text-zinc-600 dark:text-zinc-400 mb-10 text-lg">
@@ -221,7 +221,7 @@ export default function HomePage() {
           </p>
           <button
             onClick={handleGetStarted}
-            className="px-8 py-4 bg-white text-black hover:bg-zinc-200 transition-colors rounded-lg font-medium text-lg inline-flex items-center gap-2"
+            className="px-8 py-4 bg-black dark:bg-white text-white dark:text-black hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors rounded-lg font-medium text-lg inline-flex items-center gap-2"
           >
             Get Started <ArrowRight className="h-4 w-4" />
           </button>
@@ -229,7 +229,7 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-white/5 py-12 bg-white dark:bg-black">
+      <footer className="border-t border-black dark:border-white/5 py-12 bg-white dark:bg-black">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-2">
             <div className="h-6 w-6 bg-white rounded-md flex items-center justify-center">

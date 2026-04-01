@@ -58,13 +58,13 @@ function InterviewResults() {
 
   if (!sessionData) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white dark:bg-black text-white">
+      <div className="min-h-screen flex items-center justify-center bg-white dark:bg-black text-black dark:text-white">
         <div className="text-center max-w-md">
           <h2 className="text-xl font-bold text-black dark:text-white mb-2">No Results Found</h2>
           <p className="text-zinc-500 text-sm mb-6">Complete an interview session to generate a report.</p>
           <button
             onClick={() => router.push('/start-interview')}
-            className="bg-white text-black px-6 py-2 rounded-md font-medium text-sm hover:bg-zinc-200 transition-colors"
+            className="bg-black dark:bg-white text-white dark:text-black px-6 py-2 rounded-md font-medium text-sm hover:bg-zinc-200 transition-colors"
           >
             Start New Session
           </button>
@@ -93,7 +93,7 @@ function InterviewResults() {
               <div className={`text-5xl font-bold mb-2 ${getScoreColor(sessionData.overallScore)}`}>
                 {sessionData.overallScore}%
               </div>
-              <div className="text-lg font-medium text-white">
+              <div className="text-lg font-medium text-black dark:text-white">
                 {getScoreLabel(sessionData.overallScore)}
               </div>
             </div>
@@ -101,11 +101,11 @@ function InterviewResults() {
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-white dark:bg-black/50 p-4 rounded border border-zinc-300 dark:border-zinc-800">
                 <div className="text-xs text-zinc-500 mb-1">Role</div>
-                <div className="font-medium text-white">{sessionData.role || 'N/A'}</div>
+                <div className="font-medium text-black dark:text-white">{sessionData.role || 'N/A'}</div>
               </div>
               <div className="bg-white dark:bg-black/50 p-4 rounded border border-zinc-300 dark:border-zinc-800">
                 <div className="text-xs text-zinc-500 mb-1">Level</div>
-                <div className="font-medium text-white">{sessionData.level || 'N/A'}</div>
+                <div className="font-medium text-black dark:text-white">{sessionData.level || 'N/A'}</div>
               </div>
             </div>
           </div>
@@ -179,7 +179,7 @@ function InterviewResults() {
           </button>
           <button
             onClick={() => router.push('/start-interview')}
-            className="flex items-center justify-center px-6 py-3 bg-white text-black rounded-md hover:bg-zinc-200 transition-colors text-sm font-medium"
+            className="flex items-center justify-center px-6 py-3 bg-black dark:bg-white text-white dark:text-black rounded-md hover:bg-zinc-200 transition-colors text-sm font-medium"
           >
             <RotateCcw className="h-4 w-4 mr-2" />
             New Session

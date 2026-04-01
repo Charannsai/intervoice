@@ -104,12 +104,12 @@ function InterviewSetup() {
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white dark:bg-black px-4 text-white">
+      <div className="min-h-screen flex items-center justify-center bg-white dark:bg-black px-4 text-black dark:text-white">
         <div className="bg-zinc-100 dark:bg-zinc-900 border border-red-500/20 p-8 rounded-lg text-center max-w-md w-full">
           <p className="text-red-400 mb-6 text-sm font-medium">{error}</p>
           <button
             onClick={generateInterviewStructure}
-            className="bg-white text-black px-4 py-2 rounded font-medium text-sm hover:bg-zinc-200 transition-colors"
+            className="bg-black dark:bg-white text-white dark:text-black px-4 py-2 rounded font-medium text-sm hover:bg-zinc-200 transition-colors"
           >
             Retry
           </button>
@@ -120,7 +120,7 @@ function InterviewSetup() {
 
   return (
     <AuthGuard>
-      <div className="min-h-screen bg-white dark:bg-black py-12 px-6 text-white">
+      <div className="min-h-screen bg-white dark:bg-black py-12 px-6 text-black dark:text-white">
         <div className="max-w-3xl mx-auto">
           {/* Header */}
           <div className="mb-12 border-b border-zinc-300 dark:border-zinc-800 pb-8">

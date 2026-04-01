@@ -46,7 +46,7 @@ export default function ProfileSettings() {
         </div>
 
         <div className="pt-4 border-t border-zinc-300 dark:border-zinc-800">
-          <button className="bg-white text-black px-6 py-2 rounded-lg font-medium hover:bg-zinc-200 transition-colors">
+          <button className="bg-black dark:bg-white text-white dark:text-black px-6 py-2 rounded-lg font-medium hover:bg-zinc-200 transition-colors">
             Save Changes
           </button>
         </div>

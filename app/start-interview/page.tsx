@@ -101,7 +101,7 @@ function StartInterview() {
                         key={role.id}
                         onClick={() => setSelectedRole(role.id)}
                         className={`p-4 border rounded-lg text-left transition-all ${selectedRole === role.id
-                          ? 'bg-white text-black border-white ring-2 ring-white/20'
+                          ? 'bg-black dark:bg-white text-white dark:text-black border-black dark:border-white ring-2 ring-black/20 dark:ring-white/20'
                           : 'bg-white dark:bg-black border-zinc-300 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:border-zinc-600 hover:text-black dark:text-white'
                           }`}
                       >
@@ -122,7 +122,7 @@ function StartInterview() {
                         key={level.id}
                         onClick={() => setSelectedLevel(level.id)}
                         className={`p-4 border rounded-lg text-left transition-all flex justify-between items-center ${selectedLevel === level.id
-                          ? 'bg-white text-black border-white ring-2 ring-white/20'
+                          ? 'bg-black dark:bg-white text-white dark:text-black border-black dark:border-white ring-2 ring-black/20 dark:ring-white/20'
                           : 'bg-white dark:bg-black border-zinc-300 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:border-zinc-600 hover:text-black dark:text-white'
                           }`}
                       >
@@ -191,7 +191,7 @@ function StartInterview() {
                   disabled={(step === 1 && !selectedRole) || (step === 2 && !selectedLevel)}
                   className={`px-6 py-2 flex items-center gap-2 rounded-lg text-sm font-medium transition-all ${
                     ((step === 1 && selectedRole) || (step === 2 && selectedLevel))
-                      ? 'bg-white text-black hover:bg-zinc-200'
+                      ? 'bg-black dark:bg-white text-white dark:text-black hover:bg-zinc-800 dark:hover:bg-zinc-200'
                       : 'bg-zinc-200 dark:bg-zinc-800 text-zinc-500 cursor-not-allowed'
                   }`}
                 >
@@ -203,7 +203,7 @@ function StartInterview() {
                   disabled={!selectedRole || !selectedLevel}
                   className={`px-6 py-2 flex items-center gap-2 rounded-lg text-sm font-medium transition-all ${
                     selectedRole && selectedLevel
-                      ? 'bg-white text-black hover:bg-zinc-200'
+                      ? 'bg-black dark:bg-white text-white dark:text-black hover:bg-zinc-800 dark:hover:bg-zinc-200'
                       : 'bg-zinc-200 dark:bg-zinc-800 text-zinc-500 cursor-not-allowed'
                   }`}
                 >
@@ -232,7 +232,7 @@ function StartInterview() {
               </button>
               <button 
                 onClick={() => router.push('/dashboard')}
-                className="px-4 py-2 rounded-lg text-sm font-medium bg-white text-black hover:bg-zinc-200 transition-colors"
+                className="px-4 py-2 rounded-lg text-sm font-medium bg-black dark:bg-white text-white dark:text-black hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors"
               >
                 Discard & Return
               </button>
