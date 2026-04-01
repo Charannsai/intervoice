@@ -58,9 +58,9 @@ function InterviewResults() {
 
   if (!sessionData) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-black text-white">
+      <div className="min-h-screen flex items-center justify-center bg-white dark:bg-black text-white">
         <div className="text-center max-w-md">
-          <h2 className="text-xl font-bold text-white mb-2">No Results Found</h2>
+          <h2 className="text-xl font-bold text-black dark:text-white mb-2">No Results Found</h2>
           <p className="text-zinc-500 text-sm mb-6">Complete an interview session to generate a report.</p>
           <button
             onClick={() => router.push('/start-interview')}
@@ -74,19 +74,19 @@ function InterviewResults() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white py-12 px-4">
+    <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white py-12 px-4">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
           <div className="inline-flex items-center justify-center w-12 h-12 bg-white rounded-full mb-6">
             <Award className="h-6 w-6 text-black" />
           </div>
-          <h1 className="text-2xl font-bold text-white mb-2 tracking-tight">Performace Report</h1>
-          <p className="text-zinc-400 text-sm">Detailed analysis of your interview session</p>
+          <h1 className="text-2xl font-bold text-black dark:text-white mb-2 tracking-tight">Performace Report</h1>
+          <p className="text-zinc-600 dark:text-zinc-400 text-sm">Detailed analysis of your interview session</p>
         </div>
 
         {/* Overall Score */}
-        <div className="bg-zinc-900/30 border border-zinc-800 rounded-lg p-8 mb-8">
+        <div className="bg-zinc-100 dark:bg-zinc-900/30 border border-zinc-300 dark:border-zinc-800 rounded-lg p-8 mb-8">
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div className="text-center md:text-left">
               <div className="text-sm font-medium text-zinc-500 uppercase tracking-widest mb-1">Overall Score</div>
@@ -99,11 +99,11 @@ function InterviewResults() {
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              <div className="bg-black/50 p-4 rounded border border-zinc-800">
+              <div className="bg-white dark:bg-black/50 p-4 rounded border border-zinc-300 dark:border-zinc-800">
                 <div className="text-xs text-zinc-500 mb-1">Role</div>
                 <div className="font-medium text-white">{sessionData.role || 'N/A'}</div>
               </div>
-              <div className="bg-black/50 p-4 rounded border border-zinc-800">
+              <div className="bg-white dark:bg-black/50 p-4 rounded border border-zinc-300 dark:border-zinc-800">
                 <div className="text-xs text-zinc-500 mb-1">Level</div>
                 <div className="font-medium text-white">{sessionData.level || 'N/A'}</div>
               </div>
@@ -114,15 +114,15 @@ function InterviewResults() {
         {/* Round Breakdown */}
         <div className="mb-8">
           <h2 className="text-sm font-semibold text-zinc-500 uppercase tracking-widest mb-4">Module Breakdown</h2>
-          <div className="bg-zinc-900/30 border border-zinc-800 rounded-lg overflow-hidden">
+          <div className="bg-zinc-100 dark:bg-zinc-900/30 border border-zinc-300 dark:border-zinc-800 rounded-lg overflow-hidden">
             {sessionData.roundResults?.map((round: any, index: number) => (
-              <div key={index} className="flex items-center justify-between p-4 border-b border-zinc-800 last:border-0 hover:bg-zinc-900/50 transition-colors">
+              <div key={index} className="flex items-center justify-between p-4 border-b border-zinc-300 dark:border-zinc-800 last:border-0 hover:bg-zinc-100 dark:bg-zinc-900/50 transition-colors">
                 <div className="flex items-center gap-4">
-                  <div className="w-8 h-8 bg-zinc-900 border border-zinc-800 rounded flex items-center justify-center text-xs font-mono text-zinc-400">
+                  <div className="w-8 h-8 bg-zinc-100 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-800 rounded flex items-center justify-center text-xs font-mono text-zinc-600 dark:text-zinc-400">
                     {index + 1}
                   </div>
                   <div>
-                    <h3 className="font-medium text-white text-sm">{round.name}</h3>
+                    <h3 className="font-medium text-black dark:text-white text-sm">{round.name}</h3>
                     <p className="text-xs text-zinc-500">{round.type}</p>
                   </div>
                 </div>
@@ -141,12 +141,12 @@ function InterviewResults() {
 
         {/* Insights */}
         <div className="grid md:grid-cols-2 gap-8 mb-12">
-          <div className="bg-zinc-900/30 border border-zinc-800 rounded-lg p-6">
-            <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+          <div className="bg-zinc-100 dark:bg-zinc-900/30 border border-zinc-300 dark:border-zinc-800 rounded-lg p-6">
+            <h3 className="text-sm font-semibold text-black dark:text-white mb-4 flex items-center gap-2">
               <CheckCircle2 className="h-4 w-4 text-emerald-500" />
               Key Strengths
             </h3>
-            <ul className="space-y-3 text-sm text-zinc-400">
+            <ul className="space-y-3 text-sm text-zinc-600 dark:text-zinc-400">
               {sessionData.overallScore >= 80 && <li className="flex gap-2"><span>•</span> Excellent technical depth</li>}
               {sessionData.overallScore >= 60 && <li className="flex gap-2"><span>•</span> Solid problem-solving foundations</li>}
               <li className="flex gap-2"><span>•</span> Completed full pipeline</li>
@@ -154,12 +154,12 @@ function InterviewResults() {
             </ul>
           </div>
 
-          <div className="bg-zinc-900/30 border border-zinc-800 rounded-lg p-6">
-            <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+          <div className="bg-zinc-100 dark:bg-zinc-900/30 border border-zinc-300 dark:border-zinc-800 rounded-lg p-6">
+            <h3 className="text-sm font-semibold text-black dark:text-white mb-4 flex items-center gap-2">
               <TrendingUp className="h-4 w-4 text-yellow-500" />
               Focus Areas
             </h3>
-            <ul className="space-y-3 text-sm text-zinc-400">
+            <ul className="space-y-3 text-sm text-zinc-600 dark:text-zinc-400">
               {sessionData.overallScore < 80 && <li className="flex gap-2"><span>•</span> Review core algorithm complexities</li>}
               {sessionData.overallScore < 60 && <li className="flex gap-2"><span>•</span> Practice system design patterns</li>}
               <li className="flex gap-2"><span>•</span> Refine edge-case handling</li>
@@ -172,7 +172,7 @@ function InterviewResults() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <button
             onClick={() => router.push('/dashboard')}
-            className="flex items-center justify-center px-6 py-3 border border-zinc-700 text-white rounded-md hover:bg-zinc-900 transition-colors text-sm font-medium"
+            className="flex items-center justify-center px-6 py-3 border border-zinc-300 dark:border-zinc-700 text-black dark:text-white rounded-md hover:bg-zinc-100 dark:bg-zinc-900 transition-colors text-sm font-medium"
           >
             <Home className="h-4 w-4 mr-2" />
             Back to Dashboard
@@ -193,7 +193,7 @@ function InterviewResults() {
 export default function ProtectedInterviewResults() {
   return (
     <AuthGuard>
-      <Suspense fallback={<div className="min-h-screen bg-black" />}>
+      <Suspense fallback={<div className="min-h-screen bg-white dark:bg-black" />}>
         <InterviewResults />
       </Suspense>
     </AuthGuard>

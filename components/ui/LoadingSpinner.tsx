@@ -31,13 +31,13 @@ export default function LoadingSpinner({
           d="M4 12c0-4.418 3.582-8 8-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
         ></path>
       </svg>
-      {text && <div className="text-zinc-400 text-sm font-medium tracking-wide animate-pulse">{text}</div>}
+      {text && <div className="text-zinc-600 dark:text-zinc-400 text-sm font-medium tracking-wide animate-pulse">{text}</div>}
     </div>
   );
 
   if (fullScreen) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-black text-white w-full">
+      <div className="min-h-screen flex items-center justify-center bg-white dark:bg-black text-black dark:text-white w-full">
         {content}
       </div>
     );

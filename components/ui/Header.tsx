@@ -34,7 +34,7 @@ export default function Header() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-sm border-b border-white/10">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-black/80 backdrop-blur-sm border-b border-white/10">
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
 
         {/* Logo */}
@@ -42,7 +42,7 @@ export default function Header() {
           <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center text-black">
             <Command className="h-4 w-4" />
           </div>
-          <span className="font-semibold text-white tracking-tight">InterviewAI</span>
+          <span className="font-semibold text-black dark:text-white tracking-tight">InterviewAI</span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -51,24 +51,24 @@ export default function Header() {
             <>
               <Link
                 href="/dashboard"
-                className={`text-sm font-medium transition-colors ${pathname === '/dashboard' ? 'text-white' : 'text-zinc-400 hover:text-white'}`}
+                className={`text-sm font-medium transition-colors ${pathname === '/dashboard' ? 'text-black dark:text-white' : 'text-zinc-600 dark:text-zinc-400 hover:text-black dark:text-white'}`}
               >
                 Dashboard
               </Link>
               <Link
                 href="/start-interview"
-                className={`text-sm font-medium transition-colors ${pathname === '/start-interview' ? 'text-white' : 'text-zinc-400 hover:text-white'}`}
+                className={`text-sm font-medium transition-colors ${pathname === '/start-interview' ? 'text-black dark:text-white' : 'text-zinc-600 dark:text-zinc-400 hover:text-black dark:text-white'}`}
               >
                 New Session
               </Link>
 
-              <div className="h-4 w-[1px] bg-zinc-800 mx-2" />
+              <div className="h-4 w-[1px] bg-zinc-200 dark:bg-zinc-800 mx-2" />
 
               <div className="flex items-center gap-4">
                 <span className="text-xs text-zinc-500 font-mono hidden lg:inline-block">{user.email}</span>
                 <button
                   onClick={handleLogout}
-                  className="text-zinc-400 hover:text-white transition-colors"
+                  className="text-zinc-600 dark:text-zinc-400 hover:text-black dark:text-white transition-colors"
                   aria-label="Logout"
                 >
                   <LogOut className="h-4 w-4" />
@@ -77,7 +77,7 @@ export default function Header() {
             </>
           ) : (
             <div className="flex items-center gap-4">
-              <Link href="/auth" className="text-sm font-medium text-zinc-400 hover:text-white transition-colors">
+              <Link href="/auth" className="text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-black dark:text-white transition-colors">
                 Sign In
               </Link>
               <Link
@@ -93,7 +93,7 @@ export default function Header() {
         {/* Mobile menu button */}
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="md:hidden text-zinc-400 hover:text-white"
+          className="md:hidden text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-white"
         >
           {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
@@ -106,7 +106,7 @@ export default function Header() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden border-t border-zinc-800 bg-black overflow-hidden"
+            className="md:hidden border-t border-zinc-300 dark:border-zinc-800 bg-white dark:bg-black overflow-hidden"
           >
             <div className="px-6 py-4 space-y-4">
               {user ? (
@@ -129,7 +129,7 @@ export default function Header() {
                 </>
               ) : (
                 <>
-                  <Link href="/auth" className="block text-sm font-medium text-zinc-400" onClick={() => setIsMenuOpen(false)}>
+                  <Link href="/auth" className="block text-sm font-medium text-zinc-600 dark:text-zinc-400" onClick={() => setIsMenuOpen(false)}>
                     Sign In
                   </Link>
                   <Link href="/auth" className="block text-sm font-medium text-white" onClick={() => setIsMenuOpen(false)}>

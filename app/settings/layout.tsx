@@ -16,12 +16,12 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
 
   return (
     <AuthGuard>
-      <div className="min-h-screen bg-black text-white pt-24 px-6 pb-12">
+      <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white pt-24 px-6 pb-12">
         <div className="max-w-5xl mx-auto">
           <div className="mb-8 flex items-center gap-4">
             <button 
               onClick={() => router.push('/dashboard')}
-              className="p-2 hover:bg-zinc-900 rounded-lg transition-colors text-zinc-400 hover:text-white"
+              className="p-2 hover:bg-zinc-100 dark:bg-zinc-900 rounded-lg transition-colors text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-white"
             >
               <ArrowLeft className="h-5 w-5" />
             </button>
@@ -39,8 +39,8 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
                       onClick={() => router.push(item.href)}
                       className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors text-sm font-medium ${
                         isActive 
-                          ? 'bg-zinc-800 text-white' 
-                          : 'text-zinc-400 hover:bg-zinc-900/50 hover:text-white'
+                          ? 'bg-zinc-200 dark:bg-zinc-800 text-black dark:text-white' 
+                          : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-900/50 hover:text-black dark:text-white'
                       }`}
                     >
                       <item.icon className="h-5 w-5" />
@@ -50,7 +50,7 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
                 })}
               </nav>
             </aside>
-            <main className="flex-1 bg-zinc-900/30 border border-zinc-800 rounded-xl p-8 min-h-[500px]">
+            <main className="flex-1 bg-zinc-100 dark:bg-zinc-900/30 border border-zinc-300 dark:border-zinc-800 rounded-xl p-8 min-h-[500px]">
               {children}
             </main>
           </div>

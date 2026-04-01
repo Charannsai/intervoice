@@ -42,7 +42,7 @@ export default function AuthForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black px-4">
+    <div className="min-h-screen flex items-center justify-center bg-white dark:bg-black px-4">
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -53,7 +53,7 @@ export default function AuthForm() {
           <div className="w-12 h-12 bg-white rounded-xl mx-auto flex items-center justify-center mb-6">
             <Command className="h-6 w-6 text-black" />
           </div>
-          <h2 className="text-2xl font-bold text-white tracking-tight mb-2">
+          <h2 className="text-2xl font-bold text-black dark:text-white tracking-tight mb-2">
             {isLogin ? 'Welcome back' : 'Create your account'}
           </h2>
           <p className="text-zinc-500 text-sm">
@@ -70,7 +70,7 @@ export default function AuthForm() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="name@example.com"
-                className="w-full bg-black border border-zinc-800 text-white rounded-lg py-3 px-4 placeholder:text-zinc-600 focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition-all text-sm"
+                className="w-full bg-white dark:bg-black border border-zinc-300 dark:border-zinc-800 text-black dark:text-white rounded-lg py-3 px-4 placeholder:text-zinc-600 focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition-all text-sm"
               />
             </div>
 
@@ -81,7 +81,7 @@ export default function AuthForm() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password"
-                className="w-full bg-black border border-zinc-800 text-white rounded-lg py-3 px-4 placeholder:text-zinc-600 focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition-all text-sm"
+                className="w-full bg-white dark:bg-black border border-zinc-300 dark:border-zinc-800 text-black dark:text-white rounded-lg py-3 px-4 placeholder:text-zinc-600 focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition-all text-sm"
               />
             </div>
           </div>
@@ -121,12 +121,12 @@ export default function AuthForm() {
               setIsLogin(!isLogin);
               setError('');
             }}
-            className="text-zinc-500 hover:text-white transition-colors text-sm"
+            className="text-zinc-500 hover:text-black dark:text-white transition-colors text-sm"
           >
             {isLogin ? (
-              <>Don't have an account? <span className="text-white ml-1">Sign up</span></>
+              <>Don't have an account? <span className="text-black dark:text-white ml-1">Sign up</span></>
             ) : (
-              <>Already have an account? <span className="text-white ml-1">Sign in</span></>
+              <>Already have an account? <span className="text-black dark:text-white ml-1">Sign in</span></>
             )}
           </button>
         </div>

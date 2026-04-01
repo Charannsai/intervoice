@@ -115,16 +115,16 @@ export default function CodingRound({ roundName, focus, taskCount, onComplete }:
       {/* Header */}
       <div className="flex items-center justify-between mb-6 shrink-0">
         <div className="flex items-center gap-3">
-          <div className="h-8 w-8 bg-zinc-900 border border-zinc-800 rounded flex items-center justify-center">
+          <div className="h-8 w-8 bg-zinc-100 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-800 rounded flex items-center justify-center">
             <Code2 className="h-4 w-4 text-white" />
           </div>
           <div>
-            <h2 className="text-sm font-bold text-white uppercase tracking-wide">Live Assessment</h2>
+            <h2 className="text-sm font-bold text-black dark:text-white uppercase tracking-wide">Live Assessment</h2>
             <div className="text-xs text-zinc-500">Task {currentTask + 1} of {taskCount}</div>
           </div>
         </div>
         <div className="flex items-center gap-4">
-          <div className="text-zinc-400 font-mono text-sm border border-zinc-800 px-3 py-1 bg-zinc-900 rounded flex items-center gap-2">
+          <div className="text-zinc-600 dark:text-zinc-400 font-mono text-sm border border-zinc-300 dark:border-zinc-800 px-3 py-1 bg-zinc-100 dark:bg-zinc-900 rounded flex items-center gap-2">
             <Clock className="h-3 w-3" />
             {formatTime(timeLeft)}
           </div>
@@ -141,7 +141,7 @@ export default function CodingRound({ roundName, focus, taskCount, onComplete }:
         {/* Left Panel: Problem & Output */}
         <div className="flex flex-col gap-4 h-full overflow-hidden">
           {/* Problem */}
-          <div className="flex-grow bg-zinc-900/30 border border-zinc-800 rounded-lg p-6 overflow-y-auto">
+          <div className="flex-grow bg-zinc-100 dark:bg-zinc-900/30 border border-zinc-300 dark:border-zinc-800 rounded-lg p-6 overflow-y-auto">
             <div className="flex justify-between items-start mb-4">
               <h3 className="text-lg font-semibold text-white">{problem.title}</h3>
               <span className={`px-2 py-0.5 text-[10px] uppercase font-bold rounded ${problem.difficulty === 'Easy' ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' : 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/20'
@@ -151,19 +151,19 @@ export default function CodingRound({ roundName, focus, taskCount, onComplete }:
             </div>
 
             <div className="prose prose-invert prose-sm max-w-none">
-              <p className="text-zinc-300 mb-6">{problem.description}</p>
+              <p className="text-zinc-700 dark:text-zinc-300 mb-6">{problem.description}</p>
 
               <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">Example</h4>
-              <div className="bg-black/50 border border-zinc-800 p-4 rounded-md font-mono text-xs text-zinc-300 whitespace-pre-wrap">
+              <div className="bg-white dark:bg-black/50 border border-zinc-300 dark:border-zinc-800 p-4 rounded-md font-mono text-xs text-zinc-700 dark:text-zinc-300 whitespace-pre-wrap">
                 {problem.example}
               </div>
             </div>
           </div>
 
           {/* Test Results */}
-          <div className="h-1/3 bg-zinc-900/30 border border-zinc-800 rounded-lg p-4 overflow-y-auto">
+          <div className="h-1/3 bg-zinc-100 dark:bg-zinc-900/30 border border-zinc-300 dark:border-zinc-800 rounded-lg p-4 overflow-y-auto">
             <div className="flex justify-between items-center mb-4 sticky top-0 bg-transparent">
-              <h4 className="text-zinc-400 text-xs font-semibold uppercase">Console Output</h4>
+              <h4 className="text-zinc-600 dark:text-zinc-400 text-xs font-semibold uppercase">Console Output</h4>
               {testResults && (
                 <span className={`text-xs flex items-center gap-1.5 ${testResults.passed ? 'text-emerald-500' : 'text-red-500'}`}>
                   {testResults.passed ? <CheckCircle2 className="h-3 w-3" /> : <AlertTriangle className="h-3 w-3" />}
@@ -180,7 +180,7 @@ export default function CodingRound({ roundName, focus, taskCount, onComplete }:
                     <span>{test.passed ? 'PASS' : 'FAIL'}</span>
                   </div>
                 ))}
-                <div className="border-t border-zinc-800 mt-2 pt-2 text-[10px] text-zinc-600 font-mono">
+                <div className="border-t border-zinc-300 dark:border-zinc-800 mt-2 pt-2 text-[10px] text-zinc-600 font-mono">
                   Exec: {testResults.executionTime} • Mem: {testResults.memoryUsage}
                 </div>
               </div>
@@ -193,13 +193,13 @@ export default function CodingRound({ roundName, focus, taskCount, onComplete }:
         </div>
 
         {/* Right Panel: Editor */}
-        <div className="bg-zinc-900/30 border border-zinc-800 rounded-lg overflow-hidden flex flex-col">
-          <div className="h-10 border-b border-zinc-800 bg-black/50 flex items-center justify-between px-4">
+        <div className="bg-zinc-100 dark:bg-zinc-900/30 border border-zinc-300 dark:border-zinc-800 rounded-lg overflow-hidden flex flex-col">
+          <div className="h-10 border-b border-zinc-300 dark:border-zinc-800 bg-white dark:bg-black/50 flex items-center justify-between px-4">
             <span className="text-xs text-zinc-500 font-mono">editor.tsx</span>
             <select
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
-              className="bg-transparent text-xs text-zinc-300 outline-none cursor-pointer hover:text-white"
+              className="bg-transparent text-xs text-zinc-700 dark:text-zinc-300 outline-none cursor-pointer hover:text-black dark:hover:text-white"
             >
               <option value="javascript">JavaScript</option>
               <option value="python">Python</option>
@@ -226,10 +226,10 @@ export default function CodingRound({ roundName, focus, taskCount, onComplete }:
             />
           </div>
 
-          <div className="p-4 border-t border-zinc-800 bg-black/20 flex justify-end">
+          <div className="p-4 border-t border-zinc-300 dark:border-zinc-800 bg-white dark:bg-black/20 flex justify-end">
             <button
               onClick={runCode}
-              className="flex items-center text-xs font-medium text-white bg-zinc-800 hover:bg-zinc-700 px-4 py-2 rounded transition-colors"
+              className="flex items-center text-xs font-medium text-black dark:text-white bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-700 px-4 py-2 rounded transition-colors"
             >
               <Play className="h-3 w-3 mr-2" />
               Run & Test

@@ -59,7 +59,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white selection:bg-white/20">
+    <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white selection:bg-white/20">
 
       {/* Subtle Background Grid */}
       <div className="fixed inset-0 z-0 bg-grid-white opacity-[0.03] pointer-events-none" />
@@ -75,7 +75,7 @@ export default function HomePage() {
           >
             <motion.div
               variants={fadeIn}
-              className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-zinc-800 bg-zinc-900/50 text-xs font-medium text-zinc-400 mb-8"
+              className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-zinc-300 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900/50 text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-8"
             >
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -86,7 +86,7 @@ export default function HomePage() {
 
             <motion.h1
               variants={fadeIn}
-              className="text-5xl md:text-7xl font-bold tracking-tight text-white mb-6 leading-[1.1]"
+              className="text-5xl md:text-7xl font-bold tracking-tight text-black dark:text-white mb-6 leading-[1.1]"
             >
               Master the technical <br />
               <span className="text-zinc-500">interview process.</span>
@@ -94,7 +94,7 @@ export default function HomePage() {
 
             <motion.p
               variants={fadeIn}
-              className="text-xl text-zinc-400 mb-10 max-w-2xl leading-relaxed"
+              className="text-xl text-zinc-600 dark:text-zinc-400 mb-10 max-w-2xl leading-relaxed"
             >
               Enterprise-grade simulations adapted to your resume.
               Practice system design, coding, and behavioral rounds with advanced AI feedback.
@@ -110,7 +110,7 @@ export default function HomePage() {
               >
                 Start Practicing <ArrowRight className="h-4 w-4" />
               </button>
-              <button className="px-8 py-3 bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white hover:border-zinc-700 transition-all rounded-lg font-medium text-lg min-w-[160px]">
+              <button className="px-8 py-3 bg-zinc-100 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:text-black dark:text-white hover:border-zinc-300 dark:border-zinc-700 transition-all rounded-lg font-medium text-lg min-w-[160px]">
                 View Demo
               </button>
             </motion.div>
@@ -123,7 +123,7 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4">Engineered for performance</h2>
-            <p className="text-zinc-400 max-w-xl mx-auto">
+            <p className="text-zinc-600 dark:text-zinc-400 max-w-xl mx-auto">
               Built by senior engineers for engineers. Move beyond memorization to deep understanding.
             </p>
           </div>
@@ -146,12 +146,12 @@ export default function HomePage() {
                 desc: "STAR method evaluation with tone and sentiment feedback via voice."
               }
             ].map((feature, i) => (
-              <div key={i} className="p-8 rounded-2xl bg-zinc-900/30 border border-white/5 hover:border-white/10 transition-colors">
-                <div className="h-12 w-12 bg-zinc-900 border border-white/10 rounded-xl flex items-center justify-center mb-6 text-white">
+              <div key={i} className="p-8 rounded-2xl bg-zinc-100 dark:bg-zinc-900/30 border border-white/5 hover:border-white/10 transition-colors">
+                <div className="h-12 w-12 bg-zinc-100 dark:bg-zinc-900 border border-white/10 rounded-xl flex items-center justify-center mb-6 text-white">
                   {feature.icon}
                 </div>
                 <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
-                <p className="text-zinc-400 leading-relaxed text-sm">
+                <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed text-sm">
                   {feature.desc}
                 </p>
               </div>
@@ -161,18 +161,18 @@ export default function HomePage() {
       </section>
 
       {/* Bento Grid - Condensed */}
-      <section className="py-24 px-6 border-b border-white/5 bg-zinc-900/20">
+      <section className="py-24 px-6 border-b border-white/5 bg-zinc-100 dark:bg-zinc-900/20">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-[300px]">
 
             {/* Large Card */}
-            <div className="md:col-span-2 row-span-1 border border-white/10 bg-black p-8 rounded-xl flex flex-col justify-between relative overflow-hidden group">
+            <div className="md:col-span-2 row-span-1 border border-white/10 bg-white dark:bg-black p-8 rounded-xl flex flex-col justify-between relative overflow-hidden group">
               <div className="absolute inset-0 bg-gradient-to-br from-zinc-900/50 to-transparent" />
               <div className="relative z-10">
                 <h3 className="text-2xl font-bold mb-2">Resume-Adaptive</h3>
-                <p className="text-zinc-400">Our engine parses your PDF to generate questions relevant to your actual experience level and tech stack stack.</p>
+                <p className="text-zinc-600 dark:text-zinc-400">Our engine parses your PDF to generate questions relevant to your actual experience level and tech stack stack.</p>
               </div>
-              <div className="relative z-10 mt-8 p-4 border border-zinc-800 bg-zinc-900/50 rounded-lg font-mono text-xs text-zinc-300">
+              <div className="relative z-10 mt-8 p-4 border border-zinc-300 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900/50 rounded-lg font-mono text-xs text-zinc-700 dark:text-zinc-300">
                 <span className="text-emerald-500">✓</span> Parsed: React, Node.js, AWS<br />
                 <span className="text-emerald-500">✓</span> Detected Level: Senior<br />
                 <span className="text-blue-500">→</span> Generating L5 System Design round...
@@ -180,7 +180,7 @@ export default function HomePage() {
             </div>
 
             {/* Tall Card */}
-            <div className="md:col-span-1 row-span-1 border border-white/10 bg-black p-8 rounded-xl flex flex-col relative overflow-hidden">
+            <div className="md:col-span-1 row-span-1 border border-white/10 bg-white dark:bg-black p-8 rounded-xl flex flex-col relative overflow-hidden">
               <div className="h-10 w-10 bg-white/5 rounded-lg flex items-center justify-center mb-6">
                 <Zap className="h-5 w-5 text-yellow-500" />
               </div>
@@ -189,7 +189,7 @@ export default function HomePage() {
             </div>
 
             {/* Small Card */}
-            <div className="md:col-span-1 row-span-1 border border-white/10 bg-black p-8 rounded-xl flex flex-col relative overflow-hidden">
+            <div className="md:col-span-1 row-span-1 border border-white/10 bg-white dark:bg-black p-8 rounded-xl flex flex-col relative overflow-hidden">
               <div className="h-10 w-10 bg-white/5 rounded-lg flex items-center justify-center mb-6">
                 <Globe className="h-5 w-5 text-blue-500" />
               </div>
@@ -206,7 +206,7 @@ export default function HomePage() {
           <h3 className="text-sm font-semibold text-zinc-500 uppercase tracking-wider mb-8">Trusted by engineers from</h3>
           <div className="flex flex-wrap justify-center gap-12 opacity-40 grayscale">
             {['Google', 'Meta', 'Netflix', 'Uber', 'Stripe'].map((company) => (
-              <span key={company} className="text-2xl font-bold text-zinc-300 pointer-events-none">{company}</span>
+              <span key={company} className="text-2xl font-bold text-zinc-700 dark:text-zinc-300 pointer-events-none">{company}</span>
             ))}
           </div>
         </div>
@@ -216,7 +216,7 @@ export default function HomePage() {
       <section className="py-24 px-6 border-t border-white/5">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to upgrade your career?</h2>
-          <p className="text-zinc-400 mb-10 text-lg">
+          <p className="text-zinc-600 dark:text-zinc-400 mb-10 text-lg">
             Join the platform building the next generation of engineering leaders.
           </p>
           <button
@@ -229,20 +229,20 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-white/5 py-12 bg-black">
+      <footer className="border-t border-white/5 py-12 bg-white dark:bg-black">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-2">
             <div className="h-6 w-6 bg-white rounded-md flex items-center justify-center">
               <span className="font-bold text-black text-xs">I</span>
             </div>
-            <span className="font-bold text-sm text-zinc-300">InterviewAI</span>
+            <span className="font-bold text-sm text-zinc-700 dark:text-zinc-300">InterviewAI</span>
           </div>
           <div className="text-zinc-600 text-sm">
             © 2024 InterviewAI Inc.
           </div>
           <div className="flex gap-6">
-            <a href="#" className="text-zinc-600 hover:text-white transition-colors text-sm">Terms</a>
-            <a href="#" className="text-zinc-600 hover:text-white transition-colors text-sm">Privacy</a>
+            <a href="#" className="text-zinc-600 hover:text-black dark:text-white transition-colors text-sm">Terms</a>
+            <a href="#" className="text-zinc-600 hover:text-black dark:text-white transition-colors text-sm">Privacy</a>
           </div>
         </div>
       </footer>

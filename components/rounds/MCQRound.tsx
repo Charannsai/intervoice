@@ -119,7 +119,7 @@ export default function MCQRound({ roundName, focus, questionCount, onComplete }
           <h2 className="text-xl font-bold text-white">{roundName}</h2>
         </div>
         <div className="flex flex-col items-end">
-          <div className="flex items-center gap-2 text-zinc-400 font-mono text-sm mb-1">
+          <div className="flex items-center gap-2 text-zinc-600 dark:text-zinc-400 font-mono text-sm mb-1">
             <Clock className="h-4 w-4" />
             <span className={timeLeft < 60 ? 'text-red-500' : ''}>{formatTime(timeLeft)}</span>
           </div>
@@ -128,7 +128,7 @@ export default function MCQRound({ roundName, focus, questionCount, onComplete }
       </div>
 
       {/* Progress */}
-      <div className="w-full bg-zinc-900 rounded-full h-1 mb-8">
+      <div className="w-full bg-zinc-100 dark:bg-zinc-900 rounded-full h-1 mb-8">
         <div
           className="bg-white h-1 rounded-full transition-all duration-300"
           style={{ width: `${((currentQuestion + 1) / questions.length) * 100}%` }}
@@ -136,9 +136,9 @@ export default function MCQRound({ roundName, focus, questionCount, onComplete }
       </div>
 
       {/* Question Card */}
-      <div className="bg-zinc-900/30 border border-zinc-800 rounded-lg p-8">
+      <div className="bg-zinc-100 dark:bg-zinc-900/30 border border-zinc-300 dark:border-zinc-800 rounded-lg p-8">
         <div className="mb-8">
-          <p className="text-zinc-300 text-lg leading-relaxed">{currentQ.question}</p>
+          <p className="text-zinc-700 dark:text-zinc-300 text-lg leading-relaxed">{currentQ.question}</p>
         </div>
 
         {/* Options */}
@@ -148,11 +148,11 @@ export default function MCQRound({ roundName, focus, questionCount, onComplete }
               key={index}
               onClick={() => handleAnswerSelect(option)}
               className={`w-full text-left p-4 border rounded-lg transition-all flex items-center gap-4 group ${selectedAnswer === option
-                  ? 'border-white bg-white/5 text-white'
-                  : 'border-zinc-800 text-zinc-400 hover:border-zinc-700 hover:bg-zinc-900/50'
+                  ? 'border-white bg-white/5 text-black dark:text-white'
+                  : 'border-zinc-300 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:bg-zinc-900/50'
                 }`}
             >
-              <span className={`flex-shrink-0 w-6 h-6 rounded-full border flex items-center justify-center text-xs font-mono transition-colors ${selectedAnswer === option ? 'border-emerald-500 text-emerald-500' : 'border-zinc-700 text-zinc-600 group-hover:border-zinc-500'
+              <span className={`flex-shrink-0 w-6 h-6 rounded-full border flex items-center justify-center text-xs font-mono transition-colors ${selectedAnswer === option ? 'border-emerald-500 text-emerald-500' : 'border-zinc-300 dark:border-zinc-700 text-zinc-600 group-hover:border-zinc-500'
                 }`}>
                 {String.fromCharCode(65 + index)}
               </span>
@@ -162,7 +162,7 @@ export default function MCQRound({ roundName, focus, questionCount, onComplete }
         </div>
 
         {/* Navigation */}
-        <div className="flex justify-between items-center pt-6 border-t border-zinc-800/50">
+        <div className="flex justify-between items-center pt-6 border-t border-zinc-300 dark:border-zinc-800/50">
           <span className="text-xs text-zinc-600">
             Selection required to proceed
           </span>
@@ -171,7 +171,7 @@ export default function MCQRound({ roundName, focus, questionCount, onComplete }
             disabled={!selectedAnswer}
             className={`px-6 py-2 rounded-md font-medium text-sm transition-all ${selectedAnswer
                 ? 'bg-white text-black hover:bg-zinc-200'
-                : 'bg-zinc-800 text-zinc-500 cursor-not-allowed'
+                : 'bg-zinc-200 dark:bg-zinc-800 text-zinc-500 cursor-not-allowed'
               }`}
           >
             {currentQuestion === questions.length - 1 ? 'Complete Module' : 'Next Question'}
