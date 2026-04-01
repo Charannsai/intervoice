@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import AuthGuard from '@/components/ui/AuthGuard';
 import { Award, TrendingUp, Clock, CheckCircle2, Download, Home, RotateCcw, AlertCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 function InterviewResults() {
   const [sessionData, setSessionData] = useState<any>(null);
@@ -52,14 +53,7 @@ function InterviewResults() {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-black text-white">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white mx-auto mb-4"></div>
-          <p className="text-zinc-500 text-sm font-mono">Generating Report...</p>
-        </div>
-      </div>
-    );
+    return <LoadingSpinner fullScreen text="Generating Report..." />;
   }
 
   if (!sessionData) {
