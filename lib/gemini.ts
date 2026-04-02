@@ -4,7 +4,7 @@ import { InterviewRound, Question, JobRole } from '@/types';
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
 export class GeminiService {
-  private model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+  private model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
   async generateInterviewRounds(role: string, experienceLevel: string): Promise<InterviewRound[]> {
     const prompt = `For the role of ${role} with ${experienceLevel} experience, generate a realistic company-style interview pipeline. Include 4-5 rounds with titles, purposes, evaluation focus, and types (MCQ, coding, voice interview, case, HR). Return a JSON object with a key "rounds" containing an array of objects with fields: name, type (MCQ, Coding, Voice, Case), focus, questionCount (number, for MCQ), taskCount (number, for coding), passCriteria (number).`;

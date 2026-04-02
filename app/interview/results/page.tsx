@@ -2,6 +2,7 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { supabase } from '@/lib/supabase';
 import AuthGuard from '@/components/ui/AuthGuard';
 import { Award, TrendingUp, Clock, CheckCircle2, Download, Home, RotateCcw, AlertCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -28,15 +29,14 @@ function InterviewResults() {
 
   const updateSessionInDB = async (data: any) => {
     if (data.sessionId) {
-      await fetch('/api/sessions', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          session_id: data.sessionId,
+      await supabase
+        .from('interview_sessions')
+        .update({
           overall_score: data.overallScore,
-          status: 'completed'
+          status: 'completed',
+          completed_at: new Date().toISOString()
         })
-      });
+        .eq('id', data.sessionId);
     }
   };
 
