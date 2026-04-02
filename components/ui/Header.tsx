@@ -7,6 +7,7 @@ import { User } from '@supabase/supabase-js';
 import { Command, Menu, X, LogOut, User as UserIcon } from 'lucide-react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import UserMenu from './UserMenu';
 
 export default function Header() {
   const [user, setUser] = useState<User | null>(null);
@@ -39,7 +40,7 @@ export default function Header() {
 
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group">
-          <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center text-black">
+          <div className="w-8 h-8 bg-black dark:bg-white rounded-lg flex items-center justify-center text-white dark:text-black">
             <Command className="h-4 w-4" />
           </div>
           <span className="font-semibold text-black dark:text-white tracking-tight">InterviewAI</span>
@@ -65,14 +66,9 @@ export default function Header() {
               <div className="h-4 w-[1px] bg-zinc-200 dark:bg-zinc-800 mx-2" />
 
               <div className="flex items-center gap-4">
-                <span className="text-xs text-zinc-500 font-mono hidden lg:inline-block">{user.email}</span>
-                <button
-                  onClick={handleLogout}
-                  className="text-zinc-600 dark:text-zinc-400 hover:text-black dark:text-white transition-colors"
-                  aria-label="Logout"
-                >
-                  <LogOut className="h-4 w-4" />
-                </button>
+                <div className="hidden lg:flex items-center gap-3">
+                  <UserMenu />
+                </div>
               </div>
             </>
           ) : (
@@ -82,7 +78,7 @@ export default function Header() {
               </Link>
               <Link
                 href="/auth"
-                className="bg-white text-black px-4 py-2 rounded-md text-sm font-medium hover:bg-zinc-200 transition-colors"
+                className="bg-black dark:bg-white text-white dark:text-black px-4 py-2 rounded-md text-sm font-medium hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors"
               >
                 Get Started
               </Link>

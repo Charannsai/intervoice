@@ -61,21 +61,21 @@ function InterviewSetup() {
         return;
       }
 
-      const response = await fetch('/api/sessions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+      const { data } = await supabase
+        .from('interview_sessions')
+        .insert({
           user_id: user.id,
           role,
           experience_level: level,
-          rounds
+          rounds,
+          status: 'in_progress',
+          overall_score: 0
         })
-      });
-
-      const data = await response.json();
+        .select()
+        .single();
 
       const sessionData = {
-        sessionId: data.session?.id || Date.now(),
+        sessionId: data?.id || Date.now(),
         role,
         level,
         resume,

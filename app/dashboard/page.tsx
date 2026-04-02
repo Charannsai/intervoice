@@ -111,14 +111,19 @@ function Dashboard() {
       <div className="max-w-6xl mx-auto">
 
         {/* Header */}
-        <div className="mb-12 flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-white/10 pb-8">
-          <div>
-            <h1 className="text-2xl font-semibold text-black dark:text-white tracking-tight mb-1">Overview</h1>
-            <p className="text-zinc-600 dark:text-zinc-400 text-sm">Welcome back, {userProfile.name}</p>
+        <div className="mb-12 flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-zinc-200 dark:border-white/10 pb-8">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-full bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 flex items-center justify-center text-lg font-medium text-black dark:text-white uppercase shrink-0">
+              {userProfile.name.charAt(0)}
+            </div>
+            <div>
+              <h1 className="text-2xl font-semibold text-black dark:text-white tracking-tight mb-1">Overview</h1>
+              <p className="text-zinc-600 dark:text-zinc-400 text-sm">Welcome back, {userProfile.name}</p>
+            </div>
           </div>
           <button
             onClick={startNewInterview}
-            className="bg-black dark:bg-white hover:bg-zinc-800 dark:hover:bg-zinc-200 text-white dark:text-black px-4 py-2 rounded-md transition-colors flex items-center gap-2 font-medium text-sm"
+            className="bg-black dark:bg-white hover:bg-zinc-800 dark:hover:bg-zinc-200 text-white dark:text-black px-4 py-2 rounded-md transition-colors flex items-center gap-2 font-medium text-sm shrink-0"
           >
             <Plus className="h-4 w-4" />
             New Session
