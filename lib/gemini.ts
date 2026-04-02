@@ -37,18 +37,18 @@ export class GeminiService {
   async generateQuestions(roundType: string, focus: string, count: number): Promise<Question[]> {
     const prompt = `Generate ${count} ${roundType} questions focused on ${focus}. For MCQ questions, include 4 options and mark the correct answer. Return as JSON array with fields: question, options (for MCQ), correctAnswer, difficulty, category.`;
 
-    const result = await this.model.generateContent(prompt);
-    const response = await result.response;
-    const text = response.text();
-
     try {
+      const result = await this.model.generateContent(prompt);
+      const response = await result.response;
+      const text = response.text();
+
       const cleanText = text.replace(/```json\n?|```\n?/g, '').trim();
       const parsed = JSON.parse(cleanText);
 
       // Handle both array and object { questions: [...] } formats
       const questionsArray = Array.isArray(parsed) ? parsed : (parsed.questions || []);
 
-      if (!Array.isArray(questionsArray)) {
+      if (!Array.isArray(questionsArray) || questionsArray.length === 0) {
         throw new Error('Invalid questions format');
       }
 
@@ -58,8 +58,8 @@ export class GeminiService {
         ...q
       }));
     } catch (error) {
-      console.error('Failed to parse questions:', error);
-      return [];
+      console.error('Failed to generate questions, using fallback:', error);
+      return this.getDefaultQuestions(roundType, focus, count);
     }
   }
 
@@ -73,10 +73,10 @@ export class GeminiService {
     Provide brief feedback and next question suggestion.
     Return as JSON with fields: technical, communication, confidence, feedback, nextQuestion.`;
 
-    const result = await this.model.generateContent(prompt);
-    const response_text = await result.response.text();
-
     try {
+      const result = await this.model.generateContent(prompt);
+      const response_text = await result.response.text();
+
       const cleanText = response_text.replace(/```json\n?|```\n?/g, '').trim();
       return JSON.parse(cleanText);
     } catch (error) {
@@ -84,7 +84,7 @@ export class GeminiService {
         technical: 7,
         communication: 7,
         confidence: 7,
-        feedback: "Good response, continue with next question.",
+        feedback: "Good response, continue with next question. (Fallback Evaluation)",
         nextQuestion: "Tell me about your experience with this technology."
       };
     }
@@ -127,7 +127,7 @@ export class GeminiService {
         name: 'Aptitude & Logical Round',
         type: 'MCQ',
         focus: 'Analytical reasoning, problem solving',
-        questionCount: 10,
+        questionCount: 5,
         passCriteria: 60
       },
       {
@@ -135,7 +135,7 @@ export class GeminiService {
         name: 'Technical Fundamentals',
         type: 'MCQ',
         focus: `${role} core concepts`,
-        questionCount: 15,
+        questionCount: 5,
         passCriteria: 70
       },
       {
@@ -143,7 +143,7 @@ export class GeminiService {
         name: 'Practical Challenge',
         type: 'Coding',
         focus: 'Problem solving and implementation',
-        taskCount: 2,
+        taskCount: 1,
         passCriteria: 60
       },
       {
@@ -152,15 +152,49 @@ export class GeminiService {
         type: 'Voice',
         focus: 'Resume-based technical discussion',
         passCriteria: 70
-      },
-      {
-        id: 'round-5',
-        name: 'HR Round',
-        type: 'Voice',
-        focus: 'Behavioral and cultural fit',
-        passCriteria: 60
       }
     ];
+  }
+
+  private getDefaultQuestions(roundType: string, focus: string, count: number): Question[] {
+    const questions: Question[] = [];
+    
+    for (let i = 0; i < count; i++) {
+      if (roundType === 'MCQ') {
+        questions.push({
+          id: `fallback-q-${Date.now()}-${i}`,
+          type: 'MCQ',
+          question: `Sample Assessment: Which of the following is an essential concept for ${focus}?`,
+          options: [
+            'Understanding the underlying architecture',
+            'Memorizing syntax without logic',
+            'Ignoring performance optimizations',
+            'Skipping unit tests altogether'
+          ],
+          correctAnswer: 'Understanding the underlying architecture',
+          difficulty: 'medium',
+          category: focus
+        });
+      } else if (roundType === 'Coding') {
+        questions.push({
+          id: `fallback-q-${Date.now()}-${i}`,
+          type: 'Coding',
+          question: `Write a function to demonstrate fundamental algorithms related to ${focus}. Optimize for time complexity and implement proper error handling.`,
+          difficulty: 'medium',
+          category: focus
+        });
+      } else {
+        questions.push({
+          id: `fallback-q-${Date.now()}-${i}`,
+          type: 'Voice',
+          question: `Can you explain your experience and approach regarding ${focus}? Detail a specific challenging problem you solved.`,
+          difficulty: 'medium',
+          category: focus
+        });
+      }
+    }
+    
+    return questions;
   }
 }
 
