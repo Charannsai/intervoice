@@ -19,6 +19,12 @@ export default function UserMenu() {
       setUser(user);
     });
 
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setUser(session?.user ?? null);
+      }
+    );
+
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setIsOpen(false);
@@ -26,10 +32,14 @@ export default function UserMenu() {
     };
 
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      subscription.unsubscribe();
+    };
   }, []);
 
   const handleSignOut = async () => {
+    setIsOpen(false);
     await supabase.auth.signOut();
     router.push('/');
   };
