@@ -200,48 +200,54 @@ export default function CareerRoadmap() {
             animate={{ opacity: 1, y: 0 }}
             className="space-y-8"
           >
-            {/* Match Score + Strengths / Gaps — mirrors stats grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {/* Score Card */}
-              <div className="bg-zinc-100 dark:bg-zinc-900/50 border border-zinc-300 dark:border-zinc-800 rounded-lg p-6 flex flex-col items-center justify-center">
-                <div className="flex items-center justify-between w-full mb-2">
-                  <span className="text-zinc-500 text-xs font-medium uppercase tracking-wider">Match Score</span>
-                  <Activity className="h-4 w-4 text-zinc-600" />
+            {/* Match Score — top banner, then Strengths / Gaps beneath */}
+            <div className="bg-zinc-100 dark:bg-zinc-900/50 border border-zinc-300 dark:border-zinc-800 rounded-lg overflow-hidden">
+              {/* Score row */}
+              <div className="px-6 pt-6 pb-4 border-b border-zinc-200 dark:border-zinc-800">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-medium uppercase tracking-wider text-zinc-500 flex items-center gap-1.5">
+                    <Activity className="h-3.5 w-3.5" /> Match Score
+                  </span>
+                  <span className="text-3xl font-bold text-black dark:text-white tracking-tight">
+                    {roadmap.matchPercentage}%
+                  </span>
                 </div>
-                <div className="text-3xl font-bold text-black dark:text-white tracking-tight mt-1">
-                  {roadmap.matchPercentage}%
+                {/* Progress bar */}
+                <div className="h-1.5 bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-black dark:bg-white rounded-full transition-all duration-700"
+                    style={{ width: `${roadmap.matchPercentage}%` }}
+                  />
                 </div>
               </div>
 
-              {/* Strengths Card */}
-              <div className="sm:col-span-2 bg-zinc-100 dark:bg-zinc-900/50 border border-zinc-300 dark:border-zinc-800 rounded-lg p-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div>
-                    <h3 className="text-xs font-medium uppercase tracking-wider text-zinc-500 mb-3 flex items-center gap-1.5">
-                      <CheckCircle2 className="h-3.5 w-3.5" /> Strengths
-                    </h3>
-                    <ul className="space-y-2">
-                      {roadmap.strengths.map((str: string, i: number) => (
-                        <li key={i} className="text-sm text-zinc-700 dark:text-zinc-300 flex items-start gap-2">
-                          <span className="h-1.5 w-1.5 rounded-full bg-zinc-500 dark:bg-zinc-400 mt-1.5 flex-shrink-0" />
-                          {str}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div>
-                    <h3 className="text-xs font-medium uppercase tracking-wider text-zinc-500 mb-3 flex items-center gap-1.5">
-                      <ArrowRight className="h-3.5 w-3.5" /> Skill Gaps
-                    </h3>
-                    <ul className="space-y-2">
-                      {roadmap.weaknesses.map((weak: string, i: number) => (
-                        <li key={i} className="text-sm text-zinc-700 dark:text-zinc-300 flex items-start gap-2">
-                          <span className="h-1.5 w-1.5 rounded-full bg-zinc-500 dark:bg-zinc-400 mt-1.5 flex-shrink-0" />
-                          {weak}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+              {/* Strengths + Gaps columns */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-zinc-200 dark:divide-zinc-800">
+                <div className="p-6">
+                  <h3 className="text-xs font-medium uppercase tracking-wider text-zinc-500 mb-4 flex items-center gap-1.5">
+                    <CheckCircle2 className="h-3.5 w-3.5" /> Strengths
+                  </h3>
+                  <ul className="space-y-2">
+                    {roadmap.strengths.map((str: string, i: number) => (
+                      <li key={i} className="text-sm text-zinc-700 dark:text-zinc-300 flex items-start gap-2">
+                        <span className="h-1.5 w-1.5 rounded-full bg-zinc-500 dark:bg-zinc-400 mt-1.5 flex-shrink-0" />
+                        {str}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="p-6">
+                  <h3 className="text-xs font-medium uppercase tracking-wider text-zinc-500 mb-4 flex items-center gap-1.5">
+                    <ArrowRight className="h-3.5 w-3.5" /> Skill Gaps
+                  </h3>
+                  <ul className="space-y-2">
+                    {roadmap.weaknesses.map((weak: string, i: number) => (
+                      <li key={i} className="text-sm text-zinc-700 dark:text-zinc-300 flex items-start gap-2">
+                        <span className="h-1.5 w-1.5 rounded-full bg-zinc-500 dark:bg-zinc-400 mt-1.5 flex-shrink-0" />
+                        {weak}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
             </div>
