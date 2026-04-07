@@ -18,7 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} bg-white dark:bg-black text-black dark:text-white antialiased selection:bg-white dark:bg-black/10 dark:selection:bg-white/20 transition-colors`}>
+      <body suppressHydrationWarning className={`${inter.className} bg-white dark:bg-black text-black dark:text-white antialiased transition-colors`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <div className="fixed top-6 right-6 z-50">
             <UserMenu />
