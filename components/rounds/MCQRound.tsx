@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Question, MCQResponse } from '@/types';
 import { Clock, CheckCircle2, Circle } from 'lucide-react';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
@@ -20,9 +20,13 @@ export default function MCQRound({ roundName, focus, questionCount, onComplete }
   const [timeLeft, setTimeLeft] = useState(600); // 10 minutes
   const [loading, setLoading] = useState(true);
   const [startTime, setStartTime] = useState(Date.now());
+  const hasFetched = React.useRef(false);
 
   useEffect(() => {
-    loadQuestions();
+    if (!hasFetched.current) {
+      hasFetched.current = true;
+      loadQuestions();
+    }
   }, []);
 
   useEffect(() => {

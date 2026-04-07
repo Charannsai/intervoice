@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import AuthGuard from '@/components/ui/AuthGuard';
@@ -16,13 +16,17 @@ function InterviewSetup() {
 
   const router = useRouter();
   const searchParams = useSearchParams();
+  const hasFetched = React.useRef(false);
 
   const role = searchParams.get('role') || '';
   const level = searchParams.get('level') || '';
   const resume = searchParams.get('resume') || '';
 
   useEffect(() => {
-    generateInterviewStructure();
+    if (!hasFetched.current) {
+      hasFetched.current = true;
+      generateInterviewStructure();
+    }
   }, []);
 
   const generateInterviewStructure = async () => {

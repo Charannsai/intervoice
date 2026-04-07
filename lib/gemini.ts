@@ -120,6 +120,48 @@ export class GeminiService {
     }
   }
 
+  async generateRoadmap(jd: string, fileData: string, mimeType: string): Promise<any> {
+    const prompt = `You are an expert career counselor. The user has provided a Job Description (JD) and a Resume.
+    Analyze the Resume against the JD and create a detailed, step-by-step roadmap to help the user bridge the gaps and achieve this job.
+    Return ONLY a JSON object with the following structure:
+    {
+      "matchPercentage": number,
+      "strengths": ["string"],
+      "weaknesses": ["string"],
+      "roadmap": [
+        {
+          "step": "string (Short title)",
+          "description": "string (Detailed action plan)",
+          "timeframe": "string (e.g., '1-2 weeks')",
+          "resources": ["string (e.g., 'Learn React on freeCodeCamp')"]
+        }
+      ],
+      "conclusion": "string (Encouraging summary)"
+    }`;
+
+    try {
+      const parts = [
+        { text: prompt },
+        { text: `Job Description:\n${jd}\n\nResume is attached as a file.` },
+        {
+          inlineData: {
+            data: fileData,
+            mimeType: mimeType
+          }
+        }
+      ];
+
+      const result = await this.model.generateContent(parts);
+      const response = await result.response;
+      const text = response.text();
+      const cleanText = text.replace(/```json\n?|```\n?/g, '').trim();
+      return JSON.parse(cleanText);
+    } catch (error: any) {
+      console.error('API Error in generateRoadmap:', error);
+      throw new Error(error.message || 'Failed to generate roadmap from Gemini');
+    }
+  }
+
   private getDefaultRounds(role: string): InterviewRound[] {
     return [
       {

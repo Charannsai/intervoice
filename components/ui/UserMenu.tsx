@@ -5,7 +5,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { User } from '@supabase/supabase-js';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Settings, User as UserIcon, Palette, LogOut } from 'lucide-react';
+import { Settings, User as UserIcon, Palette, LogOut, Route } from 'lucide-react';
 
 export default function UserMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -38,6 +38,7 @@ export default function UserMenu() {
     { icon: UserIcon, label: 'Profile', href: '/settings/profile' },
     { icon: Settings, label: 'Settings', href: '/settings' },
     { icon: Palette, label: 'Theme', href: '/settings/theme' },
+    { icon: Route, label: 'Career Roadmap', href: '/roadmap' },
   ];
 
   const isInterviewFlow = pathname?.startsWith('/interview') || pathname?.startsWith('/start-interview');
