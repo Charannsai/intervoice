@@ -90,8 +90,7 @@ export default function CareerRoadmap() {
           <div>
             <h1 className="text-2xl font-semibold text-black dark:text-white tracking-tight mb-1 flex items-center gap-2">
               Career Roadmap
-              <Sparkles className="h-5 w-5 text-zinc-400" />
-            </h1>
+             </h1>
             <p className="text-zinc-600 dark:text-zinc-400 text-sm">
               Upload your resume and paste a job description to get an actionable gap analysis.
             </p>
